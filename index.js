@@ -1,38 +1,29 @@
-const express= require("express");
-const app = express()
+const express = require("express");
+const login = require("./routes/login");
+const port = process.env.PORT || 5000;
+const app = express();
+const mongoose = require("mongoose");
+const helmet = require("helmet");
+require("dotenv").config();
+const db_opt = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    bufferCommands: false,
+};
+mongoose
+    .connect(process.env.DBCON, db_opt)
+    .then((mongoose) => {
+        console.log("connection established....");
+    })
+    .catch((e) => {
+        console.log(e);
+    });
 
-const port =  process.env.PORT || 5000;
+app.use(express.json());
+app.use(helmet());
+app.use(express.urlencoded({ extended: false }));
+app.use(login);
 
-app.get("/Account/login",(req,res)=>{
-
- return true ?  res.send("hello red"): res.send("hello world")
-
-
-
-})
-app.get("/Account/Register",(req,res)=>{
-    let app = {
-    
-        username : "johnred",
-        password : "mina",
-
-    }// object
-   console.log(app.username)
-     return false ?  res.status(404).json() : res.status(200).json({ 
-         success:true, 
-         message:"invalid password"
-     })
-   
-   
-   
-   })
-
-
-app.listen(port, function(){
-
-    console.log(`server started`)
-
-
-})
-
-
+app.listen(port, function () {
+    console.log("connected");
+});
