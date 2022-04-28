@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const test = (req, res) => {
     console.log(req.user);
-    // return
+    // return res.send("Server Running...");
     return res.json({ test: "message" });
 };
 // report page

@@ -1,5 +1,5 @@
 const express = require("express");
-const login = require("./routes/login");
+const login = require("./routes/route");
 const port = process.env.PORT || 5000;
 const app = express();
 const mongoose = require("mongoose");
