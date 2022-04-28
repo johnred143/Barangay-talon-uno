@@ -6,8 +6,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const test = (req, res) => {
     console.log(req.user);
-    return res.send("Server Running...");
+    // return
+    return res.json({ test: "message" });
 };
+// report page
 const report1 = async (req, res) => {
     const { name, address, addressdetail, report, Image } = req.body;
 
@@ -24,6 +26,7 @@ const report1 = async (req, res) => {
         rep,
     });
 };
+// token this where the token generate and edit how long the token will last
 router.post("/report", report1);
 function generateAccessToken(username) {
     return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "30s" });
