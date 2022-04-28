@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 
 router.get("/", test);
 
-router.post("/report", report1);
+router.post("/main/report", report1);
 
 router.post("/login", logsanitazer, result, login);
 
