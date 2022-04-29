@@ -24,11 +24,11 @@ const contact = (req, res) => {
 const request = async (req, res) => {
     const { type, name, address, email, phone, purpose } = req.body;
 
-    const rep = await new Reports({
+    const req1 = await new Reqform({
         type: type,
         name: name,
         address: address,
-        address: address,
+
         email: email,
         phone: phone,
         purpose: purpose,
@@ -36,7 +36,7 @@ const request = async (req, res) => {
     return res.status(200).json({
         success: true,
         message: "report submitted",
-        rep,
+        req1,
     });
 };
 

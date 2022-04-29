@@ -4,6 +4,7 @@ const reqsanitazer = [
     body("password").isLength({ min: 5 }),
 ];
 const logsanitazer = [body("email").isEmail()];
+
 const result = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

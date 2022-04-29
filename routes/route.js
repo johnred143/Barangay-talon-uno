@@ -22,11 +22,8 @@ router.get("/", test);
 router.get("/main", main);
 router.get("/main/aboutus", about);
 router.get("/main/contact", contact);
-router.get("/main/request", request);
+router.post("/main/request", request);
 router.post("/main/report", report1);
-
 router.post("/login", logsanitazer, result, login);
-
 router.post("/register", reqsanitazer, result, regs);
-
 module.exports = router;
