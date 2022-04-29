@@ -20,8 +20,16 @@ const reports = new Schema({
     Image: { type: String },
     // Image: {type: String,required:true},
 });
+const reqform = new Schema({
+    type: { type: String, required: true },
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    purpose: { type: String },
+});
 
 const User = mongoose.model("user", register);
 const Reports = mongoose.model("rep", reports);
-
-module.exports = { User, Reports };
+const Reqform = mongoose.model("req", reqform);
+module.exports = { User, Reports, Reqform };

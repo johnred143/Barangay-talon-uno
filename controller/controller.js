@@ -1,7 +1,7 @@
 const express = require("express");
 const { set } = require("express/lib/response");
 const router = express.Router();
-const { Reports, User } = require("../db/model");
+const { Reports, User, Reqform } = require("../db/model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const test = (req, res) => {
@@ -9,6 +9,37 @@ const test = (req, res) => {
     // return res.send("Server Running...");
     return res.json({ test: "message" });
 };
+const main = (req, res) => {
+    return res.json({ message: "this is main form" });
+};
+
+const about = (req, res) => {
+    return res.json({ message: "about us" });
+};
+const contact = (req, res) => {
+    return res.json({ message: "contact us " });
+};
+
+// request page
+const request = async (req, res) => {
+    const { type, name, address, email, phone, purpose } = req.body;
+
+    const rep = await new Reports({
+        type: type,
+        name: name,
+        address: address,
+        address: address,
+        email: email,
+        phone: phone,
+        purpose: purpose,
+    }).save();
+    return res.status(200).json({
+        success: true,
+        message: "report submitted",
+        rep,
+    });
+};
+
 // report page
 const report1 = async (req, res) => {
     const { name, address, addressdetail, report, Image } = req.body;
@@ -82,4 +113,5 @@ const regs = async (req, res) => {
         user,
     });
 };
-module.exports = { report1, login, regs, test };
+
+module.exports = { report1, login, regs, test, main, about, contact, request };
