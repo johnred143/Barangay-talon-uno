@@ -81,7 +81,7 @@ const login = async (req, res) => {
         const pass = await bcrypt.compare(password, user.password); //password
         if (!pass) return res.json({ login: "incorrect password" });
 
-        const token = generateAccessToken({ email: user.email });
+        const token = await generateAccessToken({ email: user.email });
         return res.status(200).json({ login: "success", token }); //password email match
     }
 };
@@ -116,7 +116,7 @@ const regs = async (req, res) => {
         birthday: birthday,
     }).save();
 
-    const regToken = generateAccessToken(user.email);
+    const regToken = await generateAccessToken(user.email);
 
     return res.status(200).json({
         success: true,
