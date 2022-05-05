@@ -16,7 +16,7 @@ const dbConn = async () => {
     };
 
     const conn = await mongoose
-        .connect(process.env.DBCON, db_opt)
+        .connect(process.env.DBCON, { family: 4 }, db_opt)
         .then((mongoose) => {
             console.log("Connection established to database");
             return mongoose;
