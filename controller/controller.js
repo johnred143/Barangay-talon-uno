@@ -62,8 +62,10 @@ const report1 = async (req, res) => {
 };
 // token this where the token generate and edit how long the token will last
 
-function generateAccessToken(username) {
-    return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "30s" });
+async function generateAccessToken(username) {
+    return await jwt.sign(username, process.env.TOKEN_SECRET, {
+        expiresIn: "30s",
+    });
 }
 
 const login = async (req, res) => {
@@ -114,10 +116,13 @@ const regs = async (req, res) => {
         birthday: birthday,
     }).save();
 
+    const regToken = generateAccessToken(user.email);
+
     return res.status(200).json({
         success: true,
         message: "registered",
         user,
+        regToken,
     });
 };
 
