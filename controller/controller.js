@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Reports, User, Reqform } = require("../db/model");
+const { User } = require("../db/model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
@@ -27,14 +27,16 @@ const contact = (req, res) => {
 const request = async (req, res) => {
     const { type, name, address, email, phone, purpose } = req.body;
 
-    const req1 = await new Reqform({
-        type: type,
-        name: name,
-        address: address,
+    const req1 = await new User({
+        reqform: {
+            type: type,
+            name: name,
+            address: address,
 
-        email: email,
-        phone: phone,
-        purpose: purpose,
+            email: email,
+            phone: phone,
+            purpose: purpose,
+        },
     }).save();
     return res.status(200).json({
         success: true,
@@ -47,12 +49,14 @@ const request = async (req, res) => {
 const report1 = async (req, res) => {
     const { name, address, addressdetail, report, Image } = req.body;
 
-    const rep = await new Reports({
-        name: name,
-        address: address,
-        addressdetail: addressdetail,
-        report: report,
-        Image: Image,
+    const rep = await new User({
+        reports: {
+            name: name,
+            address: address,
+            addressdetail: addressdetail,
+            report: report,
+            Image: Image,
+        },
     }).save();
     return res.status(200).json({
         success: true,
