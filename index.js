@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 require("dotenv").config();
 const cors = require("cors");
-const dbcon = require("./db/dbcon");
 
 app.use(
     cors({
@@ -20,8 +19,6 @@ const db_opt = {
     useUnifiedTopology: true,
     bufferCommands: false,
 };
-
-dbcon();
 
 app.use(express.json());
 app.use(helmet());

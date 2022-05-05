@@ -3,6 +3,8 @@ const router = express.Router();
 const { Reports, User, Reqform } = require("../db/model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const dbcon = require("../db/dbcon");
+
 const test = (req, res) => {
     console.log(req.user);
     // return res.send("Server Running...");
@@ -91,6 +93,8 @@ const regs = async (req, res) => {
         password,
         birthday,
     } = req.body;
+
+    await dbcon();
 
     const exist = await User.findOne({ email: email });
     console.log(exist);
