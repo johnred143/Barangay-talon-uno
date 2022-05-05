@@ -13,7 +13,6 @@ const dbConn = async () => {
     const db_opt = {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        bufferCommands: false,
     };
 
     const conn = await mongoose

@@ -67,6 +67,7 @@ function generateAccessToken(username) {
 }
 
 const login = async (req, res) => {
+    await dbcon();
     {
         const { email, password } = req.body;
 
