@@ -17,7 +17,7 @@ const {
 } = require("../middleware/sanitazer");
 const authenticateToken = require("../middleware/jwtoken");
 
-router.get("/", authenticateToken, test);
+router.get("/", test);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
