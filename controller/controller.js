@@ -17,7 +17,9 @@ const about = (req, res) => {
     return res.json({ message: "about us" });
 };
 const contact = (req, res) => {
-    return res.json({ message: "contact us " });
+    if ((token = generateAccessToken)) {
+        return res.status(200).json({ message: "login success" });
+    }
 };
 
 // request page
@@ -58,10 +60,11 @@ const report1 = async (req, res) => {
     });
 };
 // token this where the token generate and edit how long the token will last
-router.post("/report", report1);
+
 function generateAccessToken(username) {
     return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "30s" });
 }
+
 const login = async (req, res) => {
     {
         const { email, password } = req.body;

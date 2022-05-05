@@ -15,15 +15,14 @@ const {
     reqsanitazer,
     result,
 } = require("../middleware/sanitazer");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const authenticateToken = require("../middleware/jwtoken");
 
-router.get("/", test);
-router.get("/main", main);
-router.get("/main/aboutus", about);
-router.get("/main/contact", contact);
-router.post("/main/request", request);
-router.post("/main/report", report1);
+router.get("/", authenticateToken, test);
+router.get("/main", authenticateToken, main);
+router.get("/main/aboutus", authenticateToken, about);
+router.get("/main/contact", authenticateToken, contact);
+router.post("/main/request", authenticateToken, request);
+router.post("/main/report", authenticateToken, report1);
 router.post("/login", logsanitazer, result, login);
 router.post("/register", reqsanitazer, result, regs);
 module.exports = router;

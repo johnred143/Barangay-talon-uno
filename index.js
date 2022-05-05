@@ -5,6 +5,8 @@ const app = express();
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 require("dotenv").config();
+const cors = require("cors");
+
 const db_opt = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -19,6 +21,11 @@ mongoose
         console.log(e);
     });
 
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 app.use(express.json());
 app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
