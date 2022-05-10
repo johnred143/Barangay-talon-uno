@@ -80,10 +80,10 @@ const login = async (req, res) => {
         const user = await User.findOne({ email }).select("+password");
         console.log(user);
 
-        if (!user) return res.json({ login: "email not register" }); //email
+        if (!user) return res.status(401).json({ login: "email not register" }); //email
 
         const pass = await bcrypt.compare(password, user.password); //password
-        if (!pass) return res.json({ login: "incorrect password" });
+        if (!pass) return res.status(401).json({ login: "incorrect password" });
 
         const token = await generateAccessToken({ email: user.email });
         return res.status(200).json({ login: "success", token }); //password email match
