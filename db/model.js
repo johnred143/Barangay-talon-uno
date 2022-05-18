@@ -1,33 +1,59 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const register = new Schema({
-    firstname: { type: String, required: true },
-    middlename: { type: String, required: true },
-    lastname: { type: String, required: true },
-    email: { type: String, required: true },
-    address: { type: String, required: true },
-    number: { type: Number, required: true },
-    password: { type: String, required: true, select: false },
-    birthday: { type: String, required: true },
-    reports: {
-        name: { type: String, required: true },
-        address: { type: String, required: true },
-        addressdetail: { type: String, default: "NA" },
-        report: { type: String, required: true },
-        Image: { type: String },
-        // Image: {type: String,required:true},
-    },
-    reqform: {
-        type: { type: String, required: true },
-        name: { type: String, required: true },
-        address: { type: String, required: true },
+const user = new Schema(
+    {
+        firstname: { type: String, required: true },
+        middlename: { type: String, required: true },
+        lastname: { type: String, required: true },
         email: { type: String, required: true },
-        phone: { type: String, required: true },
-        purpose: { type: String },
+        address: { type: String, required: true },
+        number: { type: Number, required: true, min: 11, max: 11 },
+        password: { type: String, required: true, select: false },
+        birthday: { type: String, required: true },
     },
-});
+    { collection: "user" }
+);
 
-const User = mongoose.model("user", register);
+const Report = new Schema(
+    {
+        email: { type: String },
+        reports: [
+            {
+                type: { type: String, required: true },
+                name: { type: String, required: true },
+                address: { type: String, required: true },
+                addressdetail: { type: String, default: "NA" },
+                report: { type: String, required: true },
+                Image: { type: String, required: true },
+                success: { type: Boolean, default: false },
+                // Image: {type: String,required:true},
+            },
+        ],
+        total_user_reports: { type: Number, default: 0 },
+    },
+    { collection: "reports" }
+);
 
-module.exports = { User };
+const reqform = new Schema(
+    {
+        email: { type: String },
+        request: [
+            {
+                type: { type: String, required: true },
+                name: { type: String, required: true },
+                address: { type: String, required: true },
+                email: { type: String, required: true },
+                phone: { type: String, required: true },
+                purpose: { type: String, required: true },
+            },
+        ],
+    },
+    { collection: "request" }
+);
+
+const User = mongoose.model("user", user);
+const Reports = mongoose.model("reports", Report);
+const Request = mongoose.model("request", reqform);
+
+module.exports = { User, Reports, Request };

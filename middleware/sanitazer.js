@@ -4,7 +4,7 @@ const reqsanitazer = [
     body("password").isLength({ min: 5 }),
 ];
 const logsanitazer = [body("email").isEmail()];
-
+const emailnizer = [body("email").isEmail()];
 const result = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -12,4 +12,4 @@ const result = (req, res, next) => {
     }
     next();
 };
-module.exports = { reqsanitazer, logsanitazer, result };
+module.exports = { reqsanitazer, logsanitazer, result, emailnizer };

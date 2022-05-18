@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../db/model");
+const { User, Reports, Request } = require("../db/model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
@@ -27,29 +27,47 @@ const contact = (req, res) => {
 const request = async (req, res) => {
     const { type, name, address, email, phone, purpose } = req.body;
 
-    const req1 = await new User({
-        reqform: {
-            type: type,
-            name: name,
-            address: address,
+    await dbcon();
+    console.log("request");
+    try {
+        const result = await Request.updateOne(
+            { email },
+            {
+                $push: {
+                    request: [
+                        {
+                            type,
+                            name,
+                            address,
+                            email,
+                            phone,
+                            purpose,
+                        },
+                    ],
+                },
+            },
+            { new: true, upsert: true }
+        );
+        console.log("request done");
 
-            email: email,
-            phone: phone,
-            purpose: purpose,
-        },
-    }).save();
-    return res.status(200).json({
-        success: true,
-        message: "report submitted",
-        req1,
-    });
+        return res.status(200).json({
+            success: true,
+            msg: result,
+        });
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            msg: e,
+        });
+    }
 };
 
 // report page
 const report1 = async (req, res) => {
     const { name, address, addressdetail, report, Image } = req.body;
 
-    const rep = await new User({
+    const rep = await new Reports({
+        email: email,
         reports: {
             name: name,
             address: address,
@@ -64,11 +82,11 @@ const report1 = async (req, res) => {
         rep,
     });
 };
-// token this where the token generate and edit how long the token will last
 
-async function generateAccessToken(username) {
-    return await jwt.sign(username, process.env.TOKEN_SECRET, {
-        expiresIn: "30s",
+// token this where the token generate and edit how long the token will last
+async function generateAccessToken(email) {
+    return await jwt.sign({ email }, process.env.TOKEN_SECRET, {
+        expiresIn: "30d",
     });
 }
 
@@ -89,6 +107,7 @@ const login = async (req, res) => {
         return res.status(200).json({ login: "success", token }); //password email match
     }
 };
+
 const regs = async (req, res) => {
     const {
         firstname,
@@ -103,7 +122,7 @@ const regs = async (req, res) => {
 
     await dbcon();
 
-    const exist = await User.findOne({ email: email });
+    const exist = await User.findOne({ email });
     console.log(exist);
 
     if (exist) return res.json({ error: "username is already used!!!!" });
@@ -121,6 +140,7 @@ const regs = async (req, res) => {
     }).save();
 
     const regToken = await generateAccessToken(user.email);
+    console.log("register: ", user.email);
 
     return res.status(200).json({
         success: true,
