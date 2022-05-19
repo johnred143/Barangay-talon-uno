@@ -31,7 +31,7 @@ const request = async (req, res) => {
     console.log("request");
     try {
         const result = await Request.updateOne(
-            { email },
+            { email: req.user.email.email },
             {
                 $push: {
                     request: [
@@ -68,8 +68,8 @@ const report1 = async (req, res) => {
     await dbcon();
     console.log("report");
     try {
-        const rep = await Reports.updateOne(
-            { email },
+        const rep = await Reports.findOneAndUpdate(
+            { email: req.user.email.email },
             {
                 $push: {
                     reports: [
