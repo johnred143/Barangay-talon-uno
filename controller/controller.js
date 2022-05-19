@@ -66,21 +66,30 @@ const request = async (req, res) => {
 const report1 = async (req, res) => {
     const { name, address, addressdetail, report, Image } = req.body;
 
-    const rep = await new Reports({
-        email: email,
-        reports: {
-            name: name,
-            address: address,
-            addressdetail: addressdetail,
-            report: report,
-            Image: Image,
-        },
-    }).save();
-    return res.status(200).json({
-        success: true,
-        message: "report submitted",
-        rep,
-    });
+    await dbcon();
+    console.log("request");
+    try {
+        const rep = await Reports.updateOne(
+            { email },
+            {
+                $push: {
+                    report: [{ name, address, addressdetail, report, Image }],
+                },
+            },
+            { new: true, upsert: true }
+        );
+        console.log("request done");
+
+        return res.status(200).json({
+            success: true,
+            msg: rep,
+        });
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            msg: e,
+        });
+    }
 };
 
 // token this where the token generate and edit how long the token will last
