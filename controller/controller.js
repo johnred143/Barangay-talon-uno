@@ -64,21 +64,28 @@ const request = async (req, res) => {
 
 // report page
 const report1 = async (req, res) => {
-    const { name, address, addressdetail, report, Image } = req.body;
-
+    const { email, name, address, addressdetail, report, Image } = req.body;
     await dbcon();
-    console.log("request");
+    console.log("report");
     try {
         const rep = await Reports.updateOne(
             { email },
             {
                 $push: {
-                    report: [{ name, address, addressdetail, report, Image }],
+                    reports: [
+                        {
+                            name,
+                            address,
+                            addressdetail,
+                            report,
+                            Image,
+                        },
+                    ],
                 },
             },
             { new: true, upsert: true }
         );
-        console.log("request done");
+        console.log("report done");
 
         return res.status(200).json({
             success: true,
