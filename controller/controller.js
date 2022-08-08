@@ -11,7 +11,7 @@ const test = (req, res) => {
     return res.json({ test: "message" });
 };
 const main = (req, res) => {
-    return res.json({ message: "this is main form" });
+    return res.json({ email: "asdasd" });
 };
 
 const about = (req, res) => {
@@ -120,7 +120,11 @@ const login = async (req, res) => {
         if (!pass) return res.status(401).json({ login: "incorrect password" });
 
         const token = await generateAccessToken({ email: user.email });
-        return res.status(200).json({ login: "success", token }); //password email match
+        return res.status(200).json({
+            login: "success",
+            token,
+            fullname: user.firstname + " " + user.lastname,
+        }); //password email match
     }
 };
 
