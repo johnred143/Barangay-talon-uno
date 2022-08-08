@@ -24,7 +24,7 @@ router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
 router.post("/main/request", authenticateToken, emailnizer, result, request);
 router.post("/main/report", authenticateToken, report1);
-router.post("/main/forger");
+router.post("/main/forget");
 router.post("/login", logsanitazer, result, login);
 router.post("/register", reqsanitazer, result, regs);
 module.exports = router;
