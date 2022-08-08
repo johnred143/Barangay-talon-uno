@@ -11,7 +11,7 @@ const user = new Schema(
         city: { type: String, required: true },
         barangay: { type: String, required: true },
         street: { type: String, required: true },
-        gender: { type: Number, required: true },
+        gender: { type: Number, required: false },
         birthday: { type: String, required: true },
         password: { type: String, required: true, select: false },
     },
