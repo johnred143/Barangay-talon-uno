@@ -6,13 +6,14 @@ const user = new Schema(
         firstname: { type: String, required: true },
         middlename: { type: String },
         lastname: { type: String, required: true },
+        number: { type: Number, required: true },
         email: { type: String, required: true },
         city: { type: String, required: true },
         barangay: { type: String, required: true },
         street: { type: String, required: true },
-        number: { type: Number, required: true },
-        password: { type: String, required: true, select: false },
+        gender: { type: Number, required: true },
         birthday: { type: String, required: true },
+        password: { type: String, required: true, select: false },
     },
     { collection: "user" }
 );
