@@ -133,9 +133,12 @@ const regs = async (req, res) => {
         firstname,
         middlename,
         lastname,
-        email,
-        address,
         number,
+        email,
+        city,
+        barangay,
+        street,
+        gender,
         password,
         birthday,
     } = req.body;
@@ -149,14 +152,17 @@ const regs = async (req, res) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
     const user = await new User({
-        firstname: firstname,
-        middlename: middlename,
-        lastname: lastname,
-        email: email,
-        address: address,
+        firstname,
+        middlename,
+        lastname,
         number: Number(number),
+        email,
+        city,
+        barangay,
+        street,
+        gender,
         password: hashPassword,
-        birthday: birthday,
+        birthday,
     }).save();
 
     const regToken = await generateAccessToken(user.email);
