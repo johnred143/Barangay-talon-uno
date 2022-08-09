@@ -19,7 +19,7 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/main", authenticateToken, main);
+router.get("/main", main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
 router.post("/main/request", authenticateToken, emailnizer, result, request);
