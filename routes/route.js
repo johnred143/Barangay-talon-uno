@@ -9,6 +9,8 @@ const {
     about,
     contact,
     request,
+    verify,
+    otp,
 } = require("../controller/controller");
 const {
     logsanitazer,
@@ -19,12 +21,14 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/main", main);
+router.get("/auth", otp);
+router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
+
+router.get("/verify", authenticateToken, verify);
 router.post("/main/request", authenticateToken, emailnizer, result, request);
 router.post("/main/report", authenticateToken, report1);
-router.post("/main/forget");
 router.post("/login", logsanitazer, result, login);
 router.post("/register", reqsanitazer, result, regs);
 module.exports = router;

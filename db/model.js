@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const reset = new Schema({
+    to: { type: String, require: true },
+    subject: { type: String, require: true },
+    text: { type: String, require: true },
+});
 const user = new Schema(
     {
         firstname: { type: String, required: true },
@@ -58,5 +63,6 @@ const reqform = new Schema(
 const User = mongoose.model("user", user);
 const Reports = mongoose.model("reports", Report);
 const Request = mongoose.model("request", reqform);
+const forget = mongoose.model("Reset", reset);
 
-module.exports = { User, Reports, Request };
+module.exports = { User, Reports, Request, forget };

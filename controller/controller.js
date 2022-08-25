@@ -31,7 +31,7 @@ const request = async (req, res) => {
     console.log("request");
     try {
         const result = await Request.updateOne(
-            { email: req.user.email.email },
+            { email: req.user.email },
             {
                 $push: {
                     request: [
@@ -101,8 +101,8 @@ const report1 = async (req, res) => {
 
 // token this where the token generate and edit how long the token will last
 async function generateAccessToken(email) {
-    return await jwt.sign({ email }, process.env.TOKEN_SECRET, {
-        expiresIn: "30d",
+    return await jwt.sign(email, process.env.TOKEN_SECRET, {
+        expiresIn: "1s",
     });
 }
 
@@ -174,5 +174,44 @@ const regs = async (req, res) => {
         regToken,
     });
 };
+const { sendMail } = require("../auth/emailsender");
+const { generateOTP } = require("../auth/oth");
+const otp = async (req, res) => {
+    const { email } = req.body;
+    const gen = await generateOTP();
 
-module.exports = { report1, login, regs, test, main, about, contact, request };
+    console.log(await sendMail({ to: email, OTP: gen }));
+    return res.json({ otp: gen });
+};
+
+const verify = async (req, res) => {
+    const { email } = req.body;
+    const emailFromToken = req.user.email;
+
+    if (email === emailFromToken) {
+        return res.json({ verify: true });
+    } else return res.json({ verify: false });
+
+    // jwt.verify(
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5yZWQxNDMuanJAZ21haWwuY29tIiwiaWF0IjoxNjYxNDI5ODAzLCJleHAiOjE2NjQwMjE4MDN9.R7in9WecjwvHp8uu8OYzgMZSsHHHhpXx8YuRmzAN2Ig",
+    //     process.env.TOKEN_SECRET,
+    //     function (err, user) {
+    //         console.log(user);
+
+    //         return res.json({ user, user: req.user.email });
+    //     }
+    // );
+};
+
+module.exports = {
+    report1,
+    login,
+    regs,
+    test,
+    main,
+    about,
+    contact,
+    request,
+    otp,
+    verify,
+};
