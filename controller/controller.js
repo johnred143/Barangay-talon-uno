@@ -102,7 +102,7 @@ const report1 = async (req, res) => {
 // token this where the token generate and edit how long the token will last
 async function generateAccessToken(email) {
     return await jwt.sign(email, process.env.TOKEN_SECRET, {
-        expiresIn: "1s",
+        expiresIn: "1h",
     });
 }
 
@@ -190,7 +190,7 @@ const verify = async (req, res) => {
 
     if (email === emailFromToken) {
         return res.json({ verify: true });
-    } else return res.json({ verify: false });
+    } else return res.sendStatus(403).json({ verify: false });
 
     // jwt.verify(
     //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5yZWQxNDMuanJAZ21haWwuY29tIiwiaWF0IjoxNjYxNDI5ODAzLCJleHAiOjE2NjQwMjE4MDN9.R7in9WecjwvHp8uu8OYzgMZSsHHHhpXx8YuRmzAN2Ig",
