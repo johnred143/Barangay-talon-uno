@@ -4,7 +4,8 @@ const { User, Reports, Request } = require("../db/model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-
+const { sendMail } = require("../auth/emailsender");
+const { generateOTP } = require("../auth/oth");
 const test = (req, res) => {
     console.log(req.user);
     // return res.send("Server Running...");
@@ -174,15 +175,24 @@ const regs = async (req, res) => {
         regToken,
     });
 };
-const { sendMail } = require("../auth/emailsender");
-const { generateOTP } = require("../auth/oth");
+
 const otp = async (req, res) => {
     const { email } = req.body;
     const gen = await generateOTP();
 
-    console.log(await sendMail({ to: email, OTP: gen }));
+    // console.log(await sendMail({ to: email, OTP: gen }));
+
     return res.json({ otp: gen });
 };
+// // potang ina token yan paano reuse );
+// const verifyotp = async (req, res) => {
+//     const token = req.body;
+
+//     console.log(vertoken);
+//     if (vertoken === token) {
+//         res.json({ token: true });
+//     } else res.json({ token: false });
+// };
 
 const verify = async (req, res) => {
     const { email } = req.body;
