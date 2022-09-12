@@ -5,6 +5,7 @@ const reqsanitazer = [
 ];
 const logsanitazer = [body("email").isEmail()];
 const emailnizer = [body("email").isEmail()];
+
 const result = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
