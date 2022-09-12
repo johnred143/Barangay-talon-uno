@@ -125,6 +125,7 @@ const login = async (req, res) => {
             login: "success",
             token,
             fullname: user.firstname + " " + user.lastname,
+            email: user.email,
         }); //password email match
     }
 };
@@ -180,19 +181,19 @@ const otp = async (req, res) => {
     const { email } = req.body;
     const gen = await generateOTP();
 
-    // console.log(await sendMail({ to: email, OTP: gen }));
+    console.log(await sendMail({ to: email, OTP: gen }));
 
     return res.json({ otp: gen });
 };
-// // potang ina token yan paano reuse );
-// const verifyotp = async (req, res) => {
-//     const token = req.body;
+// potang ina token yan paano reuse );
+const verifyotp = async (req, res) => {
+    const token = req.body;
 
-//     console.log(vertoken);
-//     if (vertoken === token) {
-//         res.json({ token: true });
-//     } else res.json({ token: false });
-// };
+    console.log(vertoken);
+    if (vertoken === token) {
+        res.json({ token: true });
+    } else res.json({ token: false });
+};
 
 const verify = async (req, res) => {
     const { email } = req.body;
@@ -224,4 +225,5 @@ module.exports = {
     request,
     otp,
     verify,
+    verifyotp,
 };
