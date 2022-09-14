@@ -11,6 +11,7 @@ const {
     request,
     verify,
     otp,
+    updatepage,
 } = require("../controller/controller");
 const {
     logsanitazer,
@@ -25,10 +26,10 @@ router.get("/auth", otp);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
-
 router.post("/verify", authenticateToken, verify);
+router.post("/update", authenticateToken, updatepage);
 router.post("/main/request", authenticateToken, emailnizer, result, request);
 router.post("/main/report", authenticateToken, report1);
-router.post("/login", login);
+router.post("/login", logsanitazer, result, login);
 router.post("/register", reqsanitazer, result, regs);
 module.exports = router;

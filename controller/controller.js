@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { sendMail } = require("../auth/emailsender");
 const { generateOTP } = require("../auth/oth");
+const e = require("express");
 const test = (req, res) => {
     console.log(req.user);
     // return res.send("Server Running...");
@@ -214,6 +215,31 @@ const verify = async (req, res) => {
     // );
 };
 
+const updatepage = async (req, res) => {
+    const { firstname, middlename, lastname, number, street } = req.body;
+
+    await dbcon();
+    console.log("attempting to update");
+    try {
+        const updp = await User.findOneAndUpdate(
+            { email: req.user.email },
+
+            { $set: { firstname, middlename, lastname, number, street } }
+        );
+        console.log("update done");
+
+        return res.status(200).json({
+            success: true,
+            msg: updp,
+        });
+    } catch (e) {
+        return res.status(500).json({
+            success: false,
+            msg: e,
+        });
+    }
+};
+
 module.exports = {
     report1,
     login,
@@ -226,4 +252,5 @@ module.exports = {
     otp,
     verify,
     verifyotp,
+    updatepage,
 };
