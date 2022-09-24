@@ -22,7 +22,7 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/auth", otp);
+router.get("/auth", authenticateToken,otp);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
