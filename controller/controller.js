@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User, Reports, Request, auth } = require("../db/model");
 const bcrypt = require("bcrypt");
+const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { sendMail } = require("../auth/emailsender");
@@ -205,7 +206,7 @@ const otp = async (req, res) => {
 
   return res.json({ otp: gen });
 };
-// potang ina token yan paano reuse );
+
 const verifyotp = async (req, res) => {
   const token = req.body;
 
@@ -259,6 +260,18 @@ const updatepage = async (req, res) => {
   }
 };
 
+const sms2 = async (req, res) => {
+  const accountSid = process.env.accountSid;
+  const authToken = process.env.authToken;
+  const client = require("twilio")(accountSid, authToken);
+  const { number } = req.body;
+
+  client.messages.create({
+    body: "tang ina mo baun testing",
+    from: "+18288271391",
+    to: number,
+  });
+};
 module.exports = {
   report1,
   login,
@@ -272,4 +285,5 @@ module.exports = {
   verify,
   verifyotp,
   updatepage,
+  sms2,
 };
