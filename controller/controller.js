@@ -181,7 +181,7 @@ const regs = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "registered",
-    regToken,
+    // regToken,
   });
 };
 
