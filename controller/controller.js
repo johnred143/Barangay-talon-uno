@@ -132,6 +132,8 @@ const login = async (req, res) => {
       token,
       fullname: user.firstname + " " + user.lastname,
       email: user.email,
+      contact: user.number,
+      address: user.street + "," + user.barangay + "," + user.city,
     }); //password email match
   }
 };
@@ -173,8 +175,8 @@ const regs = async (req, res) => {
     birthday,
   }).save();
 
-  const regToken = await generateAccessToken(user.email);
-  console.log("register: ", user.email);
+  // const regToken = await generateAccessToken(user.email);
+  // console.log("register: ", user.email);
 
   return res.status(200).json({
     success: true,
@@ -185,7 +187,7 @@ const regs = async (req, res) => {
 
 const otp = async (req, res) => {
   const phtz = moment().tz("Asia/Manila").format();
-  const { email, sendotp } = req.body;
+  const { email } = req.body;
   const gen = await generateOTP();
 
   await sendMail({ to: email, OTP: gen });
