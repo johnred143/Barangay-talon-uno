@@ -185,7 +185,7 @@ const regs = async (req, res) => {
 
 const otp = async (req, res) => {
   const phtz = moment().tz("Asia/Manila").format();
-  const { email } = req.body;
+  const { email, sendotp } = req.body;
   const gen = await generateOTP();
 
   await sendMail({ to: email, OTP: gen });
