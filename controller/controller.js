@@ -9,6 +9,7 @@ const { sendMail } = require("../auth/emailsender");
 const { generateOTP } = require("../auth/oth");
 const e = require("express");
 const moment = require("moment-timezone");
+const { report } = require("../routes/route");
 const test = (req, res) => {
   console.log(req.user);
   // return res.send("Server Running...");
@@ -34,24 +35,14 @@ const request = async (req, res) => {
   await dbcon();
   console.log("request");
   try {
-    const result = await Request.updateOne(
-      { email: req.user.email },
-      {
-        $push: {
-          request: [
-            {
-              type,
-              name,
-              address,
-              email,
-              phone,
-              purpose,
-            },
-          ],
-        },
-      },
-      { new: true, upsert: true }
-    );
+    const result = await new Request({
+      type,
+      name,
+      address,
+      email,
+      phone,
+      purpose,
+    }).save();
     console.log("request done");
 
     return res.status(200).json({
@@ -191,22 +182,23 @@ const otp = async (req, res) => {
   const gen = await generateOTP();
 
   await sendMail({ to: email, OTP: gen });
-
+  // console.log(req.user._id);
   await dbcon();
   //   console.log(req.user._id, phtz);
 
   const otpss = await auth.findOneAndUpdate(
-    { _id: req.user._id },
+    { email },
     {
       $set: {
         created: phtz,
         otp: gen,
+        email
       },
     },
     { new: true, upsert: true }
   );
 
-  return res.json({ otp: gen });
+  return res.status(200).json({ otp: gen });
 };
 
 const verifyotp = async (req, res) => {

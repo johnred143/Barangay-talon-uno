@@ -34,5 +34,5 @@ router.post("/main/request", authenticateToken, emailnizer, result, request);
 router.post("/main/report", authenticateToken, report1);
 router.post("/login", logsanitazer, result, login);
 router.post("/register", reqsanitazer, result, regs);
-router.post("/auth", authenticateToken, otp);
+router.post("/auth", otp);
 module.exports = router;

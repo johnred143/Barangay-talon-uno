@@ -46,23 +46,19 @@ const Report = new Schema(
 
 const reqform = new Schema(
   {
-    email: { type: String },
-    request: [
-      {
-        type: { type: String, required: true },
-        name: { type: String, required: true },
-        address: { type: String, required: true },
-        email: { type: String, required: true },
-        phone: { type: String, required: true },
-        purpose: { type: String, required: true },
-      },
-    ],
+    type: { type: String, required: true },
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    purpose: { type: String, required: true },
   },
   { collection: "request" }
 );
 
 const otps = new Schema({
   _id: { type: mongoose.Types.ObjectId, ref: "user" },
+  email: { type: String, required: true },
   created: { type: String, required: true },
   otp: { type: String, required: true },
 });
