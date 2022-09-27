@@ -192,7 +192,7 @@ const otp = async (req, res) => {
       $set: {
         created: phtz,
         otp: gen,
-        email
+        email,
       },
     },
     { new: true, upsert: true }
