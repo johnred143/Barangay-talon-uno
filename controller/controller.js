@@ -187,7 +187,7 @@ const otp = async (req, res) => {
   //   console.log(req.user._id, phtz);
 
   const otpss = await auth.findOneAndUpdate(
-    { email },
+    { _id:req.user._id },
     {
       $set: {
         created: phtz,
@@ -261,7 +261,7 @@ const sms2 = async (req, res) => {
   const { number } = req.body;
 
   client.messages.create({
-    body: "tang ina mo baun testing",
+    body: "testing",
     from: "+18288271391",
     to: number,
   });
