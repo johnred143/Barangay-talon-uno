@@ -108,7 +108,7 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email }).select("+password");
     console.log(user);
-
+    // const otp = await User.findOne({ email }).select("otp");
     if (!user) return res.status(401).json({ login: "email not register" }); //email
 
     const pass = await bcrypt.compare(password, user.password); //password
