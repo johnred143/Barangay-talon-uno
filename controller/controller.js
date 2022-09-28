@@ -187,7 +187,7 @@ const otp = async (req, res) => {
   //   console.log(req.user._id, phtz);
 
   const otpss = await auth.findOneAndUpdate(
-    { _id:req.user._id },
+    { email },
     {
       $set: {
         created: phtz,
@@ -198,7 +198,7 @@ const otp = async (req, res) => {
     { new: true, upsert: true }
   );
 
-  return res.status(200).json({ otp: gen });
+  return res.status(200).json({ otps: gen });
 };
 
 const verifyotp = async (req, res) => {
