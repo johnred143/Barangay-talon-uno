@@ -58,7 +58,7 @@ const reqform = new Schema(
 
 const otps = new Schema({
   _id: { type: mongoose.Types.ObjectId, ref: "user" },
-  // email: { type: String, required: true },
+  email: { type: String, required: true },
   created: { type: String, required: true },
   otp: { type: String, required: true },
 });
