@@ -23,6 +23,7 @@ module.exports.sendMail = async (params) => {
           <h4>You are officially In ✔</h4>
           <p style="margin-bottom: 30px;">Pleas enter the sign up OTP to get started</p>
           <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${params.OTP}</h1>
+          <a href="https://www.facebook.com/">click me</a>
      </div>
       `,
     });

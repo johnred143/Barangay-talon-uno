@@ -118,6 +118,21 @@ const login = async (req, res) => {
       email: user.email,
       _id: user._id,
     });
+    const phtz = moment().tz("Asia/Manila").format();
+
+    const gen = await generateOTP();
+    await sendMail({ to: email, OTP: gen });
+    const otpss = await auth.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          created: phtz,
+          otp: gen,
+          email,
+        },
+      },
+      { new: true, upsert: true }
+    );
     return res.status(200).json({
       login: "success",
       token,
@@ -125,6 +140,7 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
+      otp: gen,
     }); //password email match
   }
 };
@@ -176,30 +192,30 @@ const regs = async (req, res) => {
   });
 };
 
-const otp = async (req, res) => {
-  const phtz = moment().tz("Asia/Manila").format();
-  const { email } = req.body;
-  const gen = await generateOTP();
+// const otp = async (req, res) => {
+//   const phtz = moment().tz("Asia/Manila").format();
+//   const { email ,} = req.body;
+//   const gen = await generateOTP();
 
-  await sendMail({ to: email, OTP: gen });
-  // console.log(req.user._id);
-  await dbcon();
-  //   console.log(req.user._id, phtz);
+//   await sendMail({ to: email, OTP: gen });
+//   // console.log(req.user._id);
+//   await dbcon();
+//   //   console.log(req.user._id, phtz);
 
-  const otpss = await auth.findOneAndUpdate(
-    { email },
-    {
-      $set: {
-        created: phtz,
-        otp: gen,
-        email,
-      },
-    },
-    { new: true, upsert: true }
-  );
+//   const otpss = await auth.findOneAndUpdate(
+//     { email },
+//     {
+//       $set: {
+//         created: phtz,
+//         otp: gen,
+//         email,
+//       },
+//     },
+//     { new: true, upsert: true }
+//   );
 
-  return res.status(200).json({ otps: gen });
-};
+//   return res.status(200).json({ otps: gen });
+// };
 
 const verifyotp = async (req, res) => {
   const token = req.body;
@@ -275,7 +291,7 @@ module.exports = {
   about,
   contact,
   request,
-  otp,
+  // otp,
   verify,
   verifyotp,
   updatepage,
