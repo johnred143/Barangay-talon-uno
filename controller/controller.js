@@ -231,13 +231,13 @@ const genera2 = async (req, res) => {
   //   },
   //   { new: true, upsert: true }
   // );
-  const { otp2 } = req.body;
+  const { email, otp } = req.body;
   await dbcon();
   {
-    const otp1 = await auth.findOne({ otp2 }).select("otp");
+    const otp1 = await auth.findOne({ email: email });
 
-    if (otp2 !== otp1.otp)
-      return res.status(401).json({ login: "otp incorrect" });
+    if (otp !== otp1.otp)
+      return res.status(200).json({ login: "otp incorrect" });
     console.log(otp1.otp);
   }
   return res.status(200).json({ Login: "success" });
