@@ -14,6 +14,7 @@ const {
   // otp,
   updatepage,
   sms2,
+  genera2
 } = require("../controller/controller");
 const {
   logsanitazer,
@@ -32,7 +33,8 @@ router.post("/verify", authenticateToken, verify);
 router.post("/update", authenticateToken, updatepage);
 router.post("/main/request", authenticateToken, emailnizer, result, request);
 router.post("/main/report", authenticateToken, report1);
-router.post("/login", logsanitazer, result, login);
+router.post("/login", logsanitazer, result, login,genera2);
+// router.post("/otp",genera2 );
 router.post("/register", reqsanitazer, result, regs);
 
 module.exports = router;

@@ -104,11 +104,10 @@ async function generateAccessToken(email) {
 const login = async (req, res) => {
   await dbcon();
   {
-    const { email, password } = req.body;
+    const { email, password, otp2 } = req.body;
 
     const user = await User.findOne({ email }).select("+password");
-    console.log(user);
-    // const otp = await User.findOne({ email }).select("otp");
+
     if (!user) return res.status(401).json({ login: "email not register" }); //email
 
     const pass = await bcrypt.compare(password, user.password); //password
@@ -133,6 +132,8 @@ const login = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+    console.log(user);
+
     return res.status(200).json({
       login: "success",
       token,
@@ -140,8 +141,21 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
-      otp: gen,
     }); //password email match
+  }
+};
+const genera2 = async (req, res) => {
+  await dbcon();
+  {
+    const { otp2 } = req.body;
+    const otp1 = await auth.findOne({ otp2 }).select("otp");
+    const otplast = otp1.otp;
+    if (otp2 !== otplast)
+      return res.status(401).json({ login: "otp incorrect" });
+    console.log(otp1.otp);
+    return res.status(200).json({
+      login: "success",
+    });
   }
 };
 
@@ -296,4 +310,5 @@ module.exports = {
   verifyotp,
   updatepage,
   sms2,
+  genera2,
 };
