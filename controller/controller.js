@@ -117,6 +117,26 @@ const login = async (req, res) => {
       email: user.email,
       _id: user._id,
     });
+    const phtz = moment().tz("Asia/Manila").format();
+
+    const gen = await generateOTP();
+
+    await sendMail({ to: email, OTP: gen });
+    // console.log(req.user._id);
+    await dbcon();
+    //   console.log(req.user._id, phtz);
+
+    const otpss = await auth.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          created: phtz,
+          otp: gen,
+          email,
+        },
+      },
+      { new: true, upsert: true }
+    );
 
     return res.status(200).json({
       login: "success",
@@ -191,33 +211,36 @@ const regs = async (req, res) => {
 };
 
 const genera2 = async (req, res) => {
-  const phtz = moment().tz("Asia/Manila").format();
-  const { email, otp2 } = req.body;
-  const gen = await generateOTP();
+  // const phtz = moment().tz("Asia/Manila").format();
+  // const { email, otp2 } = req.body;
+  // const gen = await generateOTP();
 
-  await sendMail({ to: email, OTP: gen });
-  // console.log(req.user._id);
+  // await sendMail({ to: email, OTP: gen });
+  // // console.log(req.user._id);
+
+  // //   console.log(req.user._id, phtz);
+
+  // const otpss = await auth.findOneAndUpdate(
+  //   { email },
+  //   {
+  //     $set: {
+  //       created: phtz,
+  //       otp: gen,
+  //       email,
+  //     },
+  //   },
+  //   { new: true, upsert: true }
+  // );
+  const { otp2 } = req.body;
   await dbcon();
-  //   console.log(req.user._id, phtz);
+  {
+    const otp1 = await auth.findOne({ otp2 }).select("otp");
 
-  const otpss = await auth.findOneAndUpdate(
-    { email },
-    {
-      $set: {
-        created: phtz,
-        otp: gen,
-        email,
-      },
-    },
-    { new: true, upsert: true }
-  );
-
-  const otp1 = await auth.findOne({ otp2 }).select("otp");
-
-  if (otp2 !== otp1.otp)
-    return res.status(401).json({ login: "otp incorrect" });
-  console.log(otp1.otp);
-  return res.status(200).json({ login: "success" });
+    if (otp2 !== otp1.otp)
+      return res.status(401).json({ login: "otp incorrect" });
+    console.log(otp1.otp);
+  }
+  return res.status(200).json({ Login: "success" });
 };
 
 const verifyotp = async (req, res) => {
