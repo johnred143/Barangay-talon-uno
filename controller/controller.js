@@ -124,7 +124,7 @@ const login = async (req, res) => {
     await sendMail({ to: email, OTP: gen });
     // console.log(req.user._id);
     await dbcon();
-    //   console.log(req.user._id, phtz);
+    console.log(user);
 
     const otpss = await auth.findOneAndUpdate(
       { email },
@@ -237,7 +237,7 @@ const genera2 = async (req, res) => {
     const otp1 = await auth.findOne({ email: email });
 
     if (otp !== otp1.otp)
-      return res.status(200).json({ login: "otp incorrect" });
+      return res.status(401).json({ login: "otp incorrect" });
     console.log(otp1.otp);
   }
   return res.status(200).json({ Login: "success" });
