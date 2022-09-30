@@ -235,12 +235,19 @@ const genera2 = async (req, res) => {
   await dbcon();
   {
     const otp1 = await auth.findOne({ email: email });
+    const user = await User.findOne({ email }).select("");
 
     if (otp !== otp1.otp)
       return res.status(401).json({ login: "otp incorrect" });
     console.log(otp1.otp);
 
-    return res.status(200).json({ Login: "success" });
+    return res.status(200).json({
+      Login: "success",
+      fullname: user.firstname + " " + user.lastname,
+      email: user.email,
+      contact: user.number,
+      address: user.street + "," + user.barangay + "," + user.city,
+    });
   }
 };
 
