@@ -145,7 +145,6 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
-      otp: gen,
     }); //password email match
   }
 };
@@ -240,8 +239,9 @@ const genera2 = async (req, res) => {
     if (otp !== otp1.otp)
       return res.status(401).json({ login: "otp incorrect" });
     console.log(otp1.otp);
+
+    return res.status(200).json({ Login: "success", email: email });
   }
-  return res.status(200).json({ Login: "success" });
 };
 
 const verifyotp = async (req, res) => {
