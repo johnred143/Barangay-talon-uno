@@ -240,7 +240,7 @@ const genera2 = async (req, res) => {
       return res.status(401).json({ login: "otp incorrect" });
     console.log(otp1.otp);
 
-    return res.status(200).json({ Login: "success", email: email });
+    return res.status(200).json({ Login: "success" });
   }
 };
 
