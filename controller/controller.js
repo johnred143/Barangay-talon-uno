@@ -127,7 +127,7 @@ const login = async (req, res) => {
     console.log(user);
 
     const otpss = await auth.findOneAndUpdate(
-      { _id:req.user._id },
+      { email },
       {
         $set: {
           created: phtz,
@@ -148,7 +148,6 @@ const login = async (req, res) => {
     }); //password email match
   }
 };
-
 
 const regs = async (req, res) => {
   const {
