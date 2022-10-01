@@ -31,7 +31,7 @@ router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);
 router.post("/verify", authenticateToken, verify);
 router.post("/update", authenticateToken, updatepage);
-router.post("/main/request", authenticateToken, emailnizer, result, request);
+router.post("/main/request", authenticateToken, request);
 router.post("/main/report", authenticateToken, report1);
 router.post("/login", logsanitazer, result, login);
 router.post("/otp", authenticateToken, genera2);
