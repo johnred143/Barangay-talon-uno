@@ -33,7 +33,7 @@ const Report = new Schema(
     report: { type: String, required: true },
     Image: { type: String, required: true },
     success: { type: Boolean, default: false },
-    // Image: {type: String,required:true},
+    Image: { type: String, required: true },
   },
 
   { collection: "reports" }

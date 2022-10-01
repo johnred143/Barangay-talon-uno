@@ -148,6 +148,14 @@ const login = async (req, res) => {
     }); //password email match
   }
 };
+const log = async (req, res) => {
+  await dbcon();
+  {
+    const { email } = req.body;
+    const user = await Request.findOne({ email }).select("");
+    console.log(user);
+  }
+};
 // const genera2 = async (req, res) => {
 //   await dbcon();
 //   {
@@ -331,4 +339,5 @@ module.exports = {
   updatepage,
   sms2,
   genera2,
+  log,
 };
