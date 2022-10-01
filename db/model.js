@@ -23,30 +23,39 @@ const user = new Schema(
   },
   { collection: "user" }
 );
-
 const Report = new Schema(
   {
-    type: { type: String, required: true },
-    name: { type: String, required: true },
-    address: { type: String, required: true },
-    addressdetail: { type: String, default: "NA" },
-    report: { type: String, required: true },
-    Image: { type: String, required: true },
-    success: { type: Boolean, default: false },
-    Image: { type: String, required: true },
+    email: { type: String },
+    reports: [
+      {
+        type: { type: String, required: true },
+        name: { type: String, required: true },
+        address: { type: String, required: true },
+        addressdetail: { type: String, default: "NA" },
+        report: { type: String, required: true },
+        Image: { type: String, required: true },
+        success: { type: Boolean, default: false },
+        // Image: {type: String,required:true},
+      },
+    ],
+    total_user_reports: { type: Number, default: 0 },
   },
-
   { collection: "reports" }
 );
 
 const reqform = new Schema(
   {
-    reqs: { type: String, default: "NA" },
-    name: { type: String, required: true },
-    address: { type: String, required: true },
-    email: { type: String, required: true },
-    phone: { type: String, required: true },
-    purpose: { type: String, required: true },
+    email: { type: String },
+    request: [
+      {
+        type: { type: String, required: true },
+        name: { type: String, required: true },
+        address: { type: String, required: true },
+        email: { type: String, required: true },
+        phone: { type: String, required: true },
+        purpose: { type: String, required: true },
+      },
+    ],
   },
   { collection: "request" }
 );
