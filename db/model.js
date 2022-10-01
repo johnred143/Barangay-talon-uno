@@ -26,27 +26,22 @@ const user = new Schema(
 
 const Report = new Schema(
   {
-    email: { type: String },
-    reports: [
-      {
-        type: { type: String, required: true },
-        name: { type: String, required: true },
-        address: { type: String, required: true },
-        addressdetail: { type: String, default: "NA" },
-        report: { type: String, required: true },
-        Image: { type: String, required: true },
-        success: { type: Boolean, default: false },
-        // Image: {type: String,required:true},
-      },
-    ],
-    total_user_reports: { type: Number, default: 0 },
+    type: { type: String, required: true },
+    name: { type: String, required: true },
+    address: { type: String, required: true },
+    addressdetail: { type: String, default: "NA" },
+    report: { type: String, required: true },
+    Image: { type: String, required: true },
+    success: { type: Boolean, default: false },
+    // Image: {type: String,required:true},
   },
+
   { collection: "reports" }
 );
 
 const reqform = new Schema(
   {
-    type: { type: String, required: true },
+    reqs: { type: String, default: "NA" },
     name: { type: String, required: true },
     address: { type: String, required: true },
     email: { type: String, required: true },
