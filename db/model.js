@@ -26,9 +26,7 @@ const user = new Schema(
 
 const Report = new Schema(
   {
-    email: { type: String },
-    reports: [
-      {
+    
         type: { type: String, required: true },
         name: { type: String, required: true },
         address: { type: String, required: true },
@@ -38,9 +36,7 @@ const Report = new Schema(
         success: { type: Boolean, default: false },
         // Image: {type: String,required:true},
       },
-    ],
-    total_user_reports: { type: Number, default: 0 },
-  },
+  
   { collection: "reports" }
 );
 
