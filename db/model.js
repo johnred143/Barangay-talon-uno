@@ -41,7 +41,7 @@ const Report = new Schema(
 
 const reqform = new Schema(
   {
-    type: { type: String },
+    type: { type: String, required: true },
     name: { type: String, required: true },
     address: { type: String, required: true },
     email: { type: String, required: true },
