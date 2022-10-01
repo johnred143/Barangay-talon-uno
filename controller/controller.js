@@ -30,13 +30,13 @@ const contact = (req, res) => {
 
 // request page
 const request = async (req, res) => {
-  const { type, name, address, email, phone, purpose } = req.body;
+  const { request, name, address, email, phone, purpose } = req.body;
 
   await dbcon();
   console.log("request");
   try {
     const result = await new Request({
-      type,
+      request,
       name,
       address,
       email,
