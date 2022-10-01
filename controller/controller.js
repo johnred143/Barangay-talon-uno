@@ -148,6 +148,20 @@ const login = async (req, res) => {
     }); //password email match
   }
 };
+// const genera2 = async (req, res) => {
+//   await dbcon();
+//   {
+//     const { otp2 } = req.body;
+//     const otp1 = await auth.findOne({ otp2 }).select("otp");
+
+//     if (otp2 !== otp1.otp)
+//       return res.status(401).json({ login: "otp incorrect" });
+//     console.log(otp1.otp);
+//     return res.status(200).json({
+//       login: "success",
+//     });
+//   }
+// };
 
 const regs = async (req, res) => {
   const {
