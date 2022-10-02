@@ -161,10 +161,12 @@ const log = async (req, res) => {
   await dbcon();
   {
     const { email } = req.body;
-    const user = await Request.findOne({ email }).select("");
-    console.log(user);
+    const reqlog = await Request.findOne({ email }).select("");
+    const replog = await Reports.findOne({ email }).select("");
+    console.log(replog, reqlog);
     return res.status(200).json({
-      user,
+      reqlog,
+      replog,
     }); //password email match
   }
 };
