@@ -7,9 +7,9 @@ const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { sendMail } = require("../auth/emailsender");
 const { generateOTP } = require("../auth/oth");
-const e = require("express");
+
 const moment = require("moment-timezone");
-const { report } = require("../routes/route");
+
 const test = (req, res) => {
   console.log(req.user);
   // return res.send("Server Running...");
@@ -68,12 +68,12 @@ const request = async (req, res) => {
 
 // report page
 const report1 = async (req, res) => {
-  const { email, name, address, addressdetail, report, Image } = req.body;
+  const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
   console.log("report");
   try {
     const rep = await Reports.findOneAndUpdate(
-      { email: req.user.email.email },
+      { email: req.user.email },
       {
         $push: {
           reports: [
@@ -163,6 +163,9 @@ const log = async (req, res) => {
     const { email } = req.body;
     const user = await Request.findOne({ email }).select("");
     console.log(user);
+    return res.status(200).json({
+      user,
+    }); //password email match
   }
 };
 // const genera2 = async (req, res) => {
@@ -305,7 +308,7 @@ const updatepage = async (req, res) => {
     const updp = await User.findOneAndUpdate(
       { email: req.user.email },
 
-      { $set: { firstname, middlename, lastname, number, street } }
+      { $set: { firstname, middlename, lastname, number } }
     );
     console.log("update done");
 
