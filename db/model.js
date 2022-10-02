@@ -20,6 +20,7 @@ const user = new Schema(
     gender: { type: String, default: "NA" },
     birthday: { type: String, required: true },
     password: { type: String, required: true, select: false },
+    token: { type: String, },
   },
   { collection: "user" }
 );

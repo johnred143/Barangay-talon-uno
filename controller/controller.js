@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail } = require("../auth/emailsender");
+const { sendMail, send } = require("../auth/emailsender");
+
 const { generateOTP } = require("../auth/oth");
 
 const moment = require("moment-timezone");
@@ -33,6 +34,12 @@ const request = async (req, res) => {
 
   await dbcon();
   console.log("request");
+  await send({
+    to: email,
+    type: "Request",
+    link: "https://barangay-talonuno.vercel.app/request",
+    midtext: "Request has been send to your barangay",
+  });
   try {
     const result = await Request.updateOne(
       { email: req.user.email },
@@ -71,6 +78,7 @@ const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
   console.log("report");
+
   try {
     const rep = await Reports.findOneAndUpdate(
       { email: req.user.email },
@@ -89,6 +97,13 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+    await send({
+      to: email,
+      type: "Report",
+      link: "https://barangay-talonuno.vercel.app/report",
+      midtext: "Report Submitted to local Authority",
+    });
+
     console.log("report done");
 
     return res.status(200).json({
@@ -130,9 +145,14 @@ const login = async (req, res) => {
 
     const gen = await generateOTP();
 
-    await sendMail({ to: email, OTP: gen });
-    // console.log(req.user._id);
-    await dbcon();
+    await sendMail({
+      to: email,
+      OTP: gen,
+      mid: "Please enter the sign in OTP to get started",
+      sub: "Talon Uno Login OTP",
+    });
+    // console.log(user._id);
+
     console.log(user);
 
     const otpss = await auth.findOneAndUpdate(
@@ -204,7 +224,14 @@ const regs = async (req, res) => {
 
   const exist = await User.findOne({ email });
   console.log(exist);
+  const gen = await generateOTP();
 
+  await sendMail({
+    to: email,
+    OTP: gen,
+    mid: "Please enter the sign up OTP to get started",
+    sub: "Talon Uno Register",
+  });
   if (exist) return res.json({ error: "username is already used!!!!" });
   const hashPassword = await bcrypt.hash(password, 10);
 
@@ -220,6 +247,7 @@ const regs = async (req, res) => {
     gender,
     password: hashPassword,
     birthday,
+    token: gen,
   }).save();
 
   // const regToken = await generateAccessToken(user.email);
@@ -228,6 +256,7 @@ const regs = async (req, res) => {
   return res.status(200).json({
     success: true,
     message: "registered",
+    RegisterToken: gen,
     // regToken,
   });
 };
