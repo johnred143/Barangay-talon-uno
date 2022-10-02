@@ -311,7 +311,11 @@ const updatepage = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      msg: updp,
+      firstname,
+      middlename,
+      lastname,
+      number,
+      street,
     });
   } catch (e) {
     return res.status(500).json({

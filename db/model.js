@@ -10,14 +10,14 @@ const reset = new Schema({
 const user = new Schema(
   {
     firstname: { type: String, required: true },
-    middlename: { type: String },
+    middlename: { type: String, default: "NA" },
     lastname: { type: String, required: true },
     number: { type: Number, required: true },
     email: { type: String, required: true },
     city: { type: String, required: true },
     barangay: { type: String, required: true },
     street: { type: String, required: true },
-    gender: { type: String },
+    gender: { type: String, default: "NA" },
     birthday: { type: String, required: true },
     password: { type: String, required: true, select: false },
   },
@@ -35,8 +35,7 @@ const Report = new Schema(
         report: { type: String, required: true },
         Image: { type: String, required: true },
         success: { type: Boolean, default: false },
-        Image: {type: String,required:true},
-        
+        Image: { type: String, required: true },
       },
     ],
     total_user_reports: { type: Number, default: 0 },
