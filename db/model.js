@@ -36,6 +36,7 @@ const Report = new Schema(
         Image: { type: String, required: true },
         success: { type: Boolean, default: false },
         Image: {type: String,required:true},
+        
       },
     ],
     total_user_reports: { type: Number, default: 0 },

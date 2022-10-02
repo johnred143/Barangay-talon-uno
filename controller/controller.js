@@ -34,35 +34,35 @@ const request = async (req, res) => {
   await dbcon();
   console.log("request");
   try {
-      const result = await Request.updateOne(
-          { email: req.user.email },
-          {
-              $push: {
-                  request: [
-                      {
-                          type,
-                          name,
-                          address,
-                          email,
-                          phone,
-                          purpose,
-                      },
-                  ],
-              },
-          },
-          { new: true, upsert: true }
-      );
-      console.log("request done");
+    const result = await Request.updateOne(
+      { email: req.user.email },
+      {
+        $push: {
+          request: [
+            {
+              type,
+              name,
+              address,
+              email,
+              phone,
+              purpose,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
+    console.log("request done");
 
-      return res.status(200).json({
-          success: true,
-          msg: result,
-      });
+    return res.status(200).json({
+      success: true,
+      msg: result,
+    });
   } catch (e) {
-      return res.status(500).json({
-          success: false,
-          msg: e,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: e,
+    });
   }
 };
 
@@ -72,34 +72,34 @@ const report1 = async (req, res) => {
   await dbcon();
   console.log("report");
   try {
-      const rep = await Reports.findOneAndUpdate(
-          { email: req.user.email.email },
-          {
-              $push: {
-                  reports: [
-                      {
-                          name,
-                          address,
-                          addressdetail,
-                          report,
-                          Image,
-                      },
-                  ],
-              },
-          },
-          { new: true, upsert: true }
-      );
-      console.log("report done");
+    const rep = await Reports.findOneAndUpdate(
+      { email: req.user.email.email },
+      {
+        $push: {
+          reports: [
+            {
+              name,
+              address,
+              addressdetail,
+              report,
+              Image,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
+    console.log("report done");
 
-      return res.status(200).json({
-          success: true,
-          msg: rep,
-      });
+    return res.status(200).json({
+      success: true,
+      msg: rep,
+    });
   } catch (e) {
-      return res.status(500).json({
-          success: false,
-          msg: e,
-      });
+    return res.status(500).json({
+      success: false,
+      msg: e,
+    });
   }
 };
 
@@ -321,18 +321,18 @@ const updatepage = async (req, res) => {
   }
 };
 
-const sms2 = async (req, res) => {
-  const accountSid = process.env.accountSid;
-  const authToken = process.env.authToken;
-  const client = require("twilio")(accountSid, authToken);
-  const { number } = req.body;
+// const sms2 = async (req, res) => {
+//   const accountSid = process.env.accountSid;
+//   const authToken = process.env.authToken;
+//   const client = require("twilio")(accountSid, authToken);
+//   const { number } = req.body;
 
-  client.messages.create({
-    body: "testing",
-    from: "+18288271391",
-    to: number,
-  });
-};
+//   client.messages.create({
+//     body: "testing",
+//     from: "+18288271391",
+//     to: number,
+//   });
+// };
 module.exports = {
   report1,
   login,
@@ -346,7 +346,7 @@ module.exports = {
   verify,
   verifyotp,
   updatepage,
-  sms2,
+  // sms2,
   genera2,
   log,
 };
