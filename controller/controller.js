@@ -130,6 +130,8 @@ const login = async (req, res) => {
   {
     const { email, password } = req.body;
 
+    const reqlog = await Request.findOne({ email }).select("");
+    const replog = await Reports.findOne({ email }).select("");
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) return res.status(401).json({ login: "email not register" }); //email
@@ -174,6 +176,8 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
+      rep: replog,
+      req: reqlog,
     }); //password email match
   }
 };
