@@ -182,11 +182,11 @@ const log = async (req, res) => {
   await dbcon();
   {
     const reqlog = await Request.find();
-    const user= await User.find().length;
+    const user1 = await User.find();
     const replog = await Reports.find();
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
-
+    const user =user1.length;
     const penrep = replog
       .map(
         (i) => i.reports.filter((rep) => rep.process === "In process").length
@@ -207,7 +207,7 @@ const log = async (req, res) => {
       total,
       penrep,
       penreq,
-      user
+      user,
     }); //password email match
   }
 };
@@ -283,26 +283,6 @@ const regs = async (req, res) => {
 };
 
 const genera2 = async (req, res) => {
-  // const phtz = moment().tz("Asia/Manila").format();
-  // const { email, otp2 } = req.body;
-  // const gen = await generateOTP();
-
-  // await sendMail({ to: email, OTP: gen });
-  // // console.log(req.user._id);
-
-  // //   console.log(req.user._id, phtz);
-
-  // const otpss = await auth.findOneAndUpdate(
-  //   { email },
-  //   {
-  //     $set: {
-  //       created: phtz,
-  //       otp: gen,
-  //       email,
-  //     },
-  //   },
-  //   { new: true, upsert: true }
-  // );
   const { email, otp } = req.body;
   await dbcon();
   {
