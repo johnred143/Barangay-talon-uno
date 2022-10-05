@@ -27,7 +27,7 @@ const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
 // router.post("/sms", sms2);
-router.post("/log", log);
+router.get("/log", log);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
 router.get("/main/contact", authenticateToken, contact);

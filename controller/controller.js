@@ -102,6 +102,7 @@ const report1 = async (req, res) => {
       type: "Report",
       link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Report Submitted to local Authority",
+      id: req.user._id,
     });
 
     console.log("report done");
@@ -130,8 +131,6 @@ const login = async (req, res) => {
   {
     const { email, password } = req.body;
 
-    const reqlog = await Request.findOne({ email }).select("");
-    const replog = await Reports.findOne({ email }).select("");
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) return res.status(401).json({ login: "email not register" }); //email
@@ -176,21 +175,37 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
-      rep: replog,
-      req: reqlog,
     }); //password email match
   }
 };
 const log = async (req, res) => {
   await dbcon();
   {
-    const { email } = req.body;
-    const reqlog = await Request.findOne({ email }).select("");
-    const replog = await Reports.findOne({ email }).select("");
-    console.log(replog, reqlog);
+    const reqlog = await Request.find();
+    const replog = await Reports.find();
+    const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
+    const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
+
+    const penrep = replog
+      .map(
+        (i) => i.reports.filter((rep) => rep.process === "In process").length
+      )
+      .reduce((a, b) => a + b);
+    const penreq = reqlog
+      .map(
+        (i) => i.request.filter((req) => req.process === "In process").length
+      )
+      .reduce((a, b) => a + b);
+    const total = penrep + penreq;
+
     return res.status(200).json({
       reqlog,
       replog,
+      sumreq,
+      sumrep,
+      total,
+      penrep,
+      penreq,
     }); //password email match
   }
 };

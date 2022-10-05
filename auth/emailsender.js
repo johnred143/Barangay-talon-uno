@@ -55,6 +55,7 @@ module.exports.send = async (params) => {
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
       <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;"><a href=${params.link}>Make Another ${params.type} </a></h1>
+      <h1> Your Request ID is: ${params.id} </h1>
       
  </div>
      

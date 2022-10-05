@@ -37,7 +37,7 @@ const Report = new Schema(
         Image: { type: String, required: true },
         success: { type: Boolean, default: false },
         Image: { type: String, required: true },
-        process: { type: String, default: "In process" },
+        process: { type: String, default: "Pending" },
       },
     ],
     total_user_reports: { type: Number, default: 0 },
