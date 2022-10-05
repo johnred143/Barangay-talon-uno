@@ -182,6 +182,7 @@ const log = async (req, res) => {
   await dbcon();
   {
     const reqlog = await Request.find();
+    const user= await User.find().length;
     const replog = await Reports.find();
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
@@ -206,6 +207,7 @@ const log = async (req, res) => {
       total,
       penrep,
       penreq,
+      user
     }); //password email match
   }
 };
