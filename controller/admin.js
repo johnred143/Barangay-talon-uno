@@ -52,17 +52,19 @@ const adminlogin = async (req, res) => {
 const updinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
-  {
+  try {
     const reqlog = await Request.findOneAndUpdate(
       { email, "request.ref": ref },
       { $set: { "request.$.process": status } },
       { new: true }
     );
     if (reqlog) {
-      return res.json({ update: true });
+      return res.json({ update: true, reqlog });
     }
+    return res.json({ update: false, reqlog });
+  } catch (error) {
+    return res.json({ update: false, error });
   }
-  return res.json({ update: false });
 };
 const reportinator = async (req, res) => {
   const { ref, status, email } = req.body;
