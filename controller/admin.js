@@ -89,8 +89,8 @@ const reportinator = async (req, res) => {
   await dbcon();
   {
     const replog = await Request.findOneAndUpdate(
-      { email, "report.ref": ref },
-      { $set: { "report.$.process": status } },
+      { email, "request.ref": ref },
+      { $set: { "request.$.process": status } },
       { new: true }
     );
     if (replog) {
@@ -100,4 +100,4 @@ const reportinator = async (req, res) => {
   return res.json({ update: false });
 };
 
-module.exports = { adminlogin, log, updinator };
+module.exports = { adminlogin, log, updinator,reportinator };
