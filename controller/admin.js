@@ -27,9 +27,9 @@ const log = async (req, res) => {
     const total = penrep + penreq;
 
     return res.status(200).json({
-        reqlog,
-        replog,
-        sumreq,
+      reqlog,
+      replog,
+      sumreq,
       sumrep,
       total,
       penrep,
@@ -63,21 +63,21 @@ const updinator = async (req, res) => {
     }
   }
   return res.json({ update: false });
-}
+};
 const reportinator = async (req, res) => {
-    const { ref, status, email } = req.body;
-    await dbcon();
-    {
-      const reqlog = await Request.findOneAndUpdate(
-        { email, "request.ref": ref },
-        { $set: { "request.$.process": status } },
-        { new: true }
-      );
-      if (reglog) {
-        return res.json({ update: true });
-      }
+  const { ref, status, email } = req.body;
+  await dbcon();
+  {
+    const reqlog = await Request.findOneAndUpdate(
+      { email, "report.ref": ref },
+      { $set: { "report.$.process": status } },
+      { new: true }
+    );
+    if (reglog) {
+      return res.json({ update: true });
     }
-    return res.json({ update: false });
   }
+  return res.json({ update: false });
+};
 
 module.exports = { adminlogin, log, updinator };
