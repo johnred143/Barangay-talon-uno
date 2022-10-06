@@ -55,11 +55,11 @@ const updinator = async (req, res) => {
   await dbcon();
   try {
     const reqlog = await Reports.findOneAndUpdate(
-      { email, "report.ref": ref },
-      { $set: { "report.$.process": status } },
+      { email, "reports.ref": ref },
+      { $set: { "reports.$.process": status } },
       { new: true }
     );
-   
+
     if (reqlog) {
       return res.json({ update: true, reqlog });
     }
