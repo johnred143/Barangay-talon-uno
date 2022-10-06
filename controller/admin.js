@@ -58,7 +58,7 @@ const updinator = async (req, res) => {
       { $set: { "request.$.process": status } },
       { new: true }
     );
-    if (reglog) {
+    if (reqlog) {
       return res.json({ update: true });
     }
   }
@@ -68,12 +68,12 @@ const reportinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   {
-    const reqlog = await Request.findOneAndUpdate(
+    const replog = await Request.findOneAndUpdate(
       { email, "report.ref": ref },
       { $set: { "report.$.process": status } },
       { new: true }
     );
-    if (reglog) {
+    if (replog) {
       return res.json({ update: true });
     }
   }
