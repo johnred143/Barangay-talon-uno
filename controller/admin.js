@@ -37,12 +37,31 @@ const log = async (req, res) => {
 const adminlogin = async (req, res) => {
   const user = "admin";
   const pass = "pass";
+  const firedept = "fire";
+  const firepass = "dept";
+  const popo = "police";
+  const popass = "dept";
   const { username, password } = req.body;
   await dbcon();
   {
-    if (user === username && pass === password) {
-      return res.json({ login: true });
-    } else return res.json({ login: false });
+    switch (username) {
+      case "admin":
+        if (user === username && pass === password) {
+          return res.json({ login: true, usertype: "admin" });
+        } else return res.json({ login: false });
+        break;
+      case "fire":
+        if (firedept === username && firepass === password) {
+          return res.json({ login: true, usertype: "fire" });
+        } else return res.json({ login: false });
+        break;
+      case "popo":
+        if (popo === username && popass === password) {
+          return res.json({ login: true, usertype: "police" });
+        } else return res.json({ login: false });
+      default:
+        return res.json({ login: false });
+    }
   }
 };
 //this report
