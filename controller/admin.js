@@ -49,15 +49,17 @@ const adminlogin = async (req, res) => {
     } else return res.json({ login: false });
   }
 };
+//this report
 const updinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   try {
-    const reqlog = await Request.findOneAndUpdate(
-      { email, "request.ref": ref },
-      { $set: { "request.$.process": status } },
+    const reqlog = await Reports.findOneAndUpdate(
+      { email, "report.ref": ref },
+      { $set: { "report.$.process": status } },
       { new: true }
     );
+   
     if (reqlog) {
       return res.json({ update: true, reqlog });
     }
@@ -66,6 +68,7 @@ const updinator = async (req, res) => {
     return res.json({ update: false, error });
   }
 };
+//this is update
 const reportinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
