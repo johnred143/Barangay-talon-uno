@@ -8,6 +8,7 @@ const dbcon = require("../db/dbcon");
 const { sendMail, send } = require("../auth/emailsender");
 
 const { generateOTP } = require("../auth/oth");
+const { sendSms } = require("../auth/sms");
 
 const moment = require("moment-timezone");
 
@@ -31,7 +32,9 @@ const contact = (req, res) => {
 
 const request = async (req, res) => {
   const { type, name, address, email, phone, purpose } = req.body;
+  const uuid = require("uuid");
 
+  const ref = uuid.v4();
   await dbcon();
   console.log("request");
   await send({
@@ -39,22 +42,14 @@ const request = async (req, res) => {
     type: "Request",
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
+    id: ref,
   });
   try {
     const result = await Request.updateOne(
       { email: req.user.email },
       {
         $push: {
-          request: [
-            {
-              type,
-              name,
-              address,
-              email,
-              phone,
-              purpose,
-            },
-          ],
+          request: [{ ref, type, name, address, email, phone, purpose }],
         },
       },
       { new: true, upsert: true }
@@ -306,18 +301,21 @@ const updatepage = async (req, res) => {
   }
 };
 
-// const sms2 = async (req, res) => {
-//   const accountSid = process.env.accountSid;
-//   const authToken = process.env.authToken;
-//   const client = require("twilio")(accountSid, authToken);
-//   const { number } = req.body;
+const sms2 = async (req, res) => {
+  const accountSid = process.env.accountSid;
+  const authToken = process.env.authToken;
+  const client = require("twilio")(accountSid, authToken);
+  const { number } = req.body;
 
-//   client.messages.create({
-//     body: "testing",
-//     from: "+18288271391",
-//     to: number,
-//   });
-// };
+  const messages = client.messages.create({
+    body: "testing",
+    from: "+18288271391",
+    to: "09266027854",
+  });
+
+  // const messages = sendSms();
+};
+
 module.exports = {
   report1,
   login,
@@ -331,6 +329,6 @@ module.exports = {
   verify,
   verifyotp,
   updatepage,
-  // sms2,
+  sms2,
   genera2,
 };
