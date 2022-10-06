@@ -55,7 +55,7 @@ const adminlogin = async (req, res) => {
           return res.json({ login: true, usertype: "fire" });
         } else return res.json({ login: false });
         break;
-      case "popo":
+      case "police":
         if (popo === username && popass === password) {
           return res.json({ login: true, usertype: "police" });
         } else return res.json({ login: false });
