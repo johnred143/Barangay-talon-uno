@@ -15,14 +15,10 @@ const log = async (req, res) => {
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
     const user = user1.length;
     const penrep = replog
-      .map(
-        (i) => i.reports.filter((rep) => rep.process === "In process").length
-      )
+      .map((i) => i.reports.filter((rep) => rep.process === "Pending").length)
       .reduce((a, b) => a + b);
     const penreq = reqlog
-      .map(
-        (i) => i.request.filter((req) => req.process === "In process").length
-      )
+      .map((i) => i.request.filter((req) => req.process === "Pending").length)
       .reduce((a, b) => a + b);
     const total = penrep + penreq;
 
