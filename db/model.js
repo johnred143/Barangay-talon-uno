@@ -20,7 +20,7 @@ const user = new Schema(
     gender: { type: String, default: "NA" },
     birthday: { type: String, required: true },
     password: { type: String, required: true, select: false },
-    token: { type: String, },
+    token: { type: String },
   },
   { collection: "user" }
 );
@@ -29,6 +29,7 @@ const Report = new Schema(
     email: { type: String },
     reports: [
       {
+        ref: { type: String, required: true },
         type: { type: String, required: true },
         name: { type: String, required: true },
         address: { type: String, required: true },
@@ -50,6 +51,7 @@ const reqform = new Schema(
     email: { type: String },
     request: [
       {
+        ref: { type: String, required: true },
         type: { type: String, required: true },
         name: { type: String, required: true },
         address: { type: String, required: true },

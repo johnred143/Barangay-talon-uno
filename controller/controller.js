@@ -77,22 +77,15 @@ const request = async (req, res) => {
 const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
+  const uuid = require("uuid");
   console.log("report");
-
+  const ref = uuid.v4();
   try {
     const rep = await Reports.findOneAndUpdate(
       { email: req.user.email },
       {
         $push: {
-          reports: [
-            {
-              name,
-              address,
-              addressdetail,
-              report,
-              Image,
-            },
-          ],
+          reports: [{ ref, name, address, addressdetail, report, Image }],
         },
       },
       { new: true, upsert: true }
@@ -102,7 +95,7 @@ const report1 = async (req, res) => {
       type: "Report",
       link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Report Submitted to local Authority",
-      id: req.user._id,
+      id: ref,
     });
 
     console.log("report done");
@@ -178,53 +171,6 @@ const login = async (req, res) => {
     }); //password email match
   }
 };
-const log = async (req, res) => {
-  await dbcon();
-  {
-    const reqlog = await Request.find();
-    const user1 = await User.find();
-    const replog = await Reports.find();
-    const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
-    const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
-    const user =user1.length;
-    const penrep = replog
-      .map(
-        (i) => i.reports.filter((rep) => rep.process === "In process").length
-      )
-      .reduce((a, b) => a + b);
-    const penreq = reqlog
-      .map(
-        (i) => i.request.filter((req) => req.process === "In process").length
-      )
-      .reduce((a, b) => a + b);
-    const total = penrep + penreq;
-
-    return res.status(200).json({
-      reqlog,
-      replog,
-      sumreq,
-      sumrep,
-      total,
-      penrep,
-      penreq,
-      user,
-    }); //password email match
-  }
-};
-// const genera2 = async (req, res) => {
-//   await dbcon();
-//   {
-//     const { otp2 } = req.body;
-//     const otp1 = await auth.findOne({ otp2 }).select("otp");
-
-//     if (otp2 !== otp1.otp)
-//       return res.status(401).json({ login: "otp incorrect" });
-//     console.log(otp1.otp);
-//     return res.status(200).json({
-//       login: "success",
-//     });
-//   }
-// };
 
 const regs = async (req, res) => {
   const {
@@ -387,5 +333,4 @@ module.exports = {
   updatepage,
   // sms2,
   genera2,
-  log,
 };
