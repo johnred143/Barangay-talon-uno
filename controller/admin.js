@@ -75,6 +75,14 @@ const updinator = async (req, res) => {
       { $set: { "reports.$.process": status } },
       { new: true }
     );
+    await admin12({
+      to: email,
+      type: "Report",
+      link: "https://www.facebook.com/BrgyTalon1",
+      midtext:
+        "Your Report Has been Updated please contact Barangay official for more info",
+      id: ref,
+    });
 
     if (reqlog) {
       return res.json({ update: true, reqlog });
