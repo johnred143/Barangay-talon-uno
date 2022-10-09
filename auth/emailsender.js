@@ -88,7 +88,7 @@ module.exports.admin12 = async (params) => {
       <h2> ${params.type} Updated</h2>
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
-      <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;"><a href=${params.link}>Contact US</a></h1>
+      <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${params.link}</h1>
       <h1> Your Request ID is: ${params.id} </h1>
       
  </div>
