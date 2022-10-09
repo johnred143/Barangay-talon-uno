@@ -97,14 +97,14 @@ const reportinator = async (req, res) => {
 
     if (replog) {
       await admin({
-        to: email,
-        "request._id": ref,
+        to: user.email,
         type: "Request",
         link: "https://www.facebook.com/BrgyTalon1",
         midtext:
           "Your Request Has been Updated please contact Barangay official for more info",
         id: ref,
       });
+
       return res.json({ update: true });
     }
   }
