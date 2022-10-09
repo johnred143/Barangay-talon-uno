@@ -98,7 +98,7 @@ const reportinator = async (req, res) => {
       return res.json({ update: true });
     }
   }
-  await send({
+  await admin({
     to: email,
     "request._id": ref,
     type: "Request",
