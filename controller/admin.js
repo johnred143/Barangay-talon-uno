@@ -95,7 +95,7 @@ const reportinator = async (req, res) => {
       { new: true }
     );
     await admin12({
-      to: "johnred143.jr@gmail.com",
+      
       type: "Request",
       link: "https://www.facebook.com/BrgyTalon1",
       midtext:

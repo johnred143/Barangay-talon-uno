@@ -78,7 +78,7 @@ module.exports.admin12 = async (params) => {
   try {
     let info = await porter.sendMail({
       from: process.env.EMAIL,
-      to: params.to,
+      to: "johnred143.jr@gmail.com",
       subject: "BARANGAY TALON UNO",
       html: `
       <div
