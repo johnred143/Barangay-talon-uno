@@ -67,3 +67,37 @@ module.exports.send = async (params) => {
     return false;
   }
 };
+module.exports.admin = async (params) => {
+  const porter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+  try {
+    let info = await porter.sendMail({
+      from: process.env.EMAIL,
+      to: params.to,
+      subject: "BARANGAY TALON UNO",
+      html: `
+      <div
+      class="container"
+      style="max-width: 90%; margin: auto; padding-top: 20px"
+    >
+      <h2> ${params.type} Updated</h2>
+  
+      <p style="margin-bottom: 30px;">${params.midtext} </p>
+      <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;"><a href=${params.link}>Contact US</a></h1>
+      <h1> Your Request ID is: ${params.id} </h1>
+      
+ </div>
+     
+      `,
+    });
+    return info;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
