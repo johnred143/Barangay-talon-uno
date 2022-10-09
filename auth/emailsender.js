@@ -67,7 +67,7 @@ module.exports.send = async (params) => {
     return false;
   }
 };
-module.exports.admin = async (params) => {
+module.exports.admin12 = async (params) => {
   const porter = nodemailer.createTransport({
     service: "gmail",
     auth: {

@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { admin } = require("../auth/emailsender");
+const { admin12 } = require("../auth/emailsender");
 const log = async (req, res) => {
   await dbcon();
   {
@@ -94,17 +94,15 @@ const reportinator = async (req, res) => {
       { $set: { "request.$.process": status } },
       { new: true }
     );
-
+    await admin12({
+      to: "johnred143.jr@gmail.com",
+      type: "Request",
+      link: "https://www.facebook.com/BrgyTalon1",
+      midtext:
+        "Your Request Has been Updated please contact Barangay official for more info",
+      id: ref,
+    });
     if (replog) {
-      await admin({
-        to: "johnred143.jr@gmail.com",
-        type: "Request",
-        link: "https://www.facebook.com/BrgyTalon1",
-        midtext:
-          "Your Request Has been Updated please contact Barangay official for more info",
-        id: ref,
-      });
-
       return res.json({ update: true });
     }
   }
