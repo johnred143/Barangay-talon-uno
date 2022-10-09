@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, auth } = require("../db/model");
+const { User, Reports, Request } = require("../db/model");
 const bcrypt = require("bcrypt");
 const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
@@ -69,6 +69,14 @@ const updinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   try {
+    await send({
+      to: email,
+      type: "Request",
+      link: "https://www.facebook.com/BrgyTalon1",
+      midtext:
+        "Your Request Has been Updated please contact Barangay official for more info",
+      id: ref,
+    });
     const reqlog = await Reports.findOneAndUpdate(
       { email, "reports.ref": ref },
       { $set: { "reports.$.process": status } },
