@@ -94,19 +94,21 @@ const reportinator = async (req, res) => {
       { $set: { "request.$.process": status } },
       { new: true }
     );
+
     if (replog) {
+      await admin({
+        to: email,
+
+        type: "Request",
+        link: "https://www.facebook.com/BrgyTalon1",
+        midtext:
+          "Your Request Has been Updated please contact Barangay official for more info",
+        id: ref,
+      });
       return res.json({ update: true });
     }
   }
-  await admin({
-    to: email,
 
-    type: "Request",
-    link: "https://www.facebook.com/BrgyTalon1",
-    midtext:
-      "Your Request Has been Updated please contact Barangay official for more info",
-    id: ref,
-  });
   return res.json({ update: false });
 };
 
