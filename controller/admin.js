@@ -98,7 +98,7 @@ const reportinator = async (req, res) => {
     if (replog) {
       await admin({
         to: email,
-
+        "request._id": ref,
         type: "Request",
         link: "https://www.facebook.com/BrgyTalon1",
         midtext:
