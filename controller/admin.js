@@ -78,7 +78,7 @@ const updinator = async (req, res) => {
     await admin12({
       to: email,
       type: "Report",
-      link: $set,
+      link: "https://www.facebook.com/BrgyTalon1",
       midtext:
         "Your Report Has been Updated please contact Barangay official for more info",
       id: ref,
