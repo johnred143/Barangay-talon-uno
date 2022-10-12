@@ -51,9 +51,9 @@ module.exports.send = async (params) => {
       class="container"
       style="max-width: 90%; margin: auto; padding-top: 20px"
     >
-      <h2> ${params.type} submitted</h2>
+      <h2> ${params.sub} submitted</h2>
   
-      <p style="margin-bottom: 30px;">${params.midtext} </p>
+      <p style="margin-bottom: 30px;">${params.mid} </p>
       <h1> <a href= ${params.OTP}>Verify now</a>  </h1>
       
  </div>
