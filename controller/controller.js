@@ -191,8 +191,8 @@ const regs = async (req, res) => {
 
   await sendMail({
     to: email,
-    OTP: gen,
-    mid: "Please enter the sign up OTP to get started",
+    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
+    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
     sub: "Talon Uno Register",
   });
   if (exist) return res.json({ error: "username is already used!!!!" });
