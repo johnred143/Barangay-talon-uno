@@ -54,8 +54,7 @@ module.exports.send = async (params) => {
       <h2> ${params.type} submitted</h2>
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
-      <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;"><a href=${params.link}>Make Another ${params.type} </a></h1>
-      <h1> Your Request ID is: ${params.id} </h1>
+      <h1> <a href=${params.OTP}>Verify now</a>  </h1>
       
  </div>
      
@@ -89,7 +88,7 @@ module.exports.admin12 = async (params) => {
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
       <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${params.link}</h1>
-      <h1> <a href= ${params.id}>Verify now</a> </h1>
+      <h1> Your Request ID is: ${params.id} </h1>
       
  </div>
      
