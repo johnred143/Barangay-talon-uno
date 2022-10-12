@@ -92,7 +92,6 @@ const report1 = async (req, res) => {
       midtext: "Report Submitted to local Authority",
       id: ref,
     });
-    
 
     console.log("report done");
 
@@ -189,7 +188,7 @@ const regs = async (req, res) => {
   console.log(exist);
   const gen = await generateOTP();
 
-  await sendMail({
+  await send({
     to: email,
     OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
     mid: "Please click the link provided below to verify that your now a member of talon uno family ",

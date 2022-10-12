@@ -54,7 +54,7 @@ module.exports.send = async (params) => {
       <h2> ${params.type} submitted</h2>
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
-      <h1> <a href=${params.OTP}>Verify now</a>  </h1>
+      <h1> <a href= ${params.OTP}>Verify now</a>  </h1>
       
  </div>
      
