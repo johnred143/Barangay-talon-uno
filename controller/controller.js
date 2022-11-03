@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail, send } = require("../auth/emailsender");
+const { sendMail, send ,admin12} = require("../auth/emailsender");
 
 const { generateOTP } = require("../auth/oth");
 const { sendSms } = require("../auth/sms");
@@ -37,7 +37,7 @@ const request = async (req, res) => {
   const ref = uuid.v4();
   await dbcon();
   console.log("request");
-  await send({
+  await admin12({
     to: email,
     type: "Request",
     link: "https://barangay-talonuno.vercel.app/request",
@@ -85,7 +85,7 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    await send({
+    await admin12({
       to: email,
       type: "Report",
       link: "https://barangay-talonuno.vercel.app/report",
