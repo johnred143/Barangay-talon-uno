@@ -315,6 +315,26 @@ const updatepage = async (req, res) => {
   }
 };
 
+const changepass = async (req, res) => {
+  const { password, newpassword } = req.body;
+
+  await dbcon();
+  {
+    const user = await User.findOne({ email }).select("+password");
+
+    const pass = await bcrypt.compare(password, user.password); //password
+    if (!pass) return res.status(401).json({ login: "incorrect password" });
+    const hashPassword = await bcrypt.hash(newpassword, 10);
+    const update = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $set: { password: hashPassword } },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+    });
+  }
+};
 module.exports = {
   report1,
   login,
@@ -324,7 +344,7 @@ module.exports = {
   about,
   contact,
   request,
-  // otp,
+  changepass,
   verify,
   verifyotp,
   updatepage,

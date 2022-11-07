@@ -11,7 +11,7 @@ const {
   contact,
   request,
   verify,
-  // otp,
+  changepass,
   updatepage,
 
   genera2,
@@ -31,8 +31,9 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-
+router.get("/", test);
 router.get("/log", log);
+router.post("/changepassword", authenticateToken, changepass);
 router.post("/admin/update", updinator);
 router.post("/admin/report", reportinator);
 router.post("/adminlogin", adminlogin);
