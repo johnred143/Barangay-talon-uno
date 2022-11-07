@@ -30,6 +30,7 @@ const Report = new Schema(
     reports: [
       {
         ref: { type: String, required: true },
+        ReportTime: { type: String, required: true },
         type: { type: String, required: true },
         name: { type: String, required: true },
         address: { type: String, required: true },
@@ -52,6 +53,7 @@ const reqform = new Schema(
     request: [
       {
         ref: { type: String, required: true },
+        RequestTime: { type: String, required: true },
         type: { type: String, required: true },
         name: { type: String, required: true },
         address: { type: String, required: true },

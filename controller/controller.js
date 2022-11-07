@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const Mail = require("../auth/sms");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail, send ,admin12} = require("../auth/emailsender");
+const { sendMail, send, admin12 } = require("../auth/emailsender");
 
 const { generateOTP } = require("../auth/oth");
 const { sendSms } = require("../auth/sms");
@@ -33,7 +33,7 @@ const contact = (req, res) => {
 const request = async (req, res) => {
   const { type, name, address, email, phone, purpose } = req.body;
   const uuid = require("uuid");
-
+  const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
   await dbcon();
   console.log("request");
@@ -49,7 +49,9 @@ const request = async (req, res) => {
       { email: req.user.email },
       {
         $push: {
-          request: [{ ref, type, name, address, email, phone, purpose }],
+          request: [
+            { RequestTime, ref, type, name, address, email, phone, purpose },
+          ],
         },
       },
       { new: true, upsert: true }
@@ -73,6 +75,7 @@ const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
   const uuid = require("uuid");
+  const ReportTime = moment().tz("Asia/Manila").format();
   console.log("report");
   const ref = uuid.v4();
   try {
@@ -80,7 +83,9 @@ const report1 = async (req, res) => {
       { email: req.user.email },
       {
         $push: {
-          reports: [{ ref, name, address, addressdetail, report, Image }],
+          reports: [
+            { ReportTime, ref, name, address, addressdetail, report, Image },
+          ],
         },
       },
       { new: true, upsert: true }
