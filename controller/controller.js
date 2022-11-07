@@ -2,13 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { User, Reports, Request, auth } = require("../db/model");
 const bcrypt = require("bcrypt");
-const Mail = require("../auth/sms");
+
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { sendMail, send, admin12 } = require("../auth/emailsender");
-
+const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
-const { sendSms } = require("../auth/sms");
 
 const moment = require("moment-timezone");
 
@@ -278,16 +277,26 @@ const verify = async (req, res) => {
 };
 
 const updatepage = async (req, res) => {
-  const { firstname, middlename, lastname, number, street } = req.body;
+  const { image, firstname, middlename, lastname, number, street } = req.body;
 
   await dbcon();
   console.log("attempting to update");
   try {
+    const upload = await cloudinary.uploader.upload(image, {
+      folder: `user/`,
+    });
+
     const updp = await User.findOneAndUpdate(
       { email: req.user.email },
 
-      { $set: { firstname, middlename, lastname, number } }
+      {
+        $set: {
+          image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
+          number,
+        },
+      }
     );
+
     console.log("update done");
 
     return res.status(200).json({
@@ -306,21 +315,6 @@ const updatepage = async (req, res) => {
   }
 };
 
-const sms2 = async (req, res) => {
-  const accountSid = process.env.accountSid;
-  const authToken = process.env.authToken;
-  const client = require("twilio")(accountSid, authToken);
-  const { number } = req.body;
-
-  const messages = client.messages.create({
-    body: "testing",
-    from: "+18288271391",
-    to: "09266027854",
-  });
-
-  // const messages = sendSms();
-};
-
 module.exports = {
   report1,
   login,
@@ -334,6 +328,6 @@ module.exports = {
   verify,
   verifyotp,
   updatepage,
-  sms2,
+
   genera2,
 };

@@ -9,6 +9,7 @@ const reset = new Schema({
 });
 const user = new Schema(
   {
+    image: { type: String },
     firstname: { type: String, required: true },
     middlename: { type: String, default: "NA" },
     lastname: { type: String, required: true },

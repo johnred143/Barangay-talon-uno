@@ -13,10 +13,15 @@ const {
   verify,
   // otp,
   updatepage,
-  sms2,
+
   genera2,
 } = require("../controller/controller");
-const { adminlogin, log, updinator ,reportinator} = require("../controller/admin");
+const {
+  adminlogin,
+  log,
+  updinator,
+  reportinator,
+} = require("../controller/admin");
 const {
   logsanitazer,
   reqsanitazer,
@@ -26,7 +31,7 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/sms", sms2);
+
 router.get("/log", log);
 router.post("/admin/update", updinator);
 router.post("/admin/report", reportinator);

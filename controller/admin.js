@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User, Reports, Request } = require("../db/model");
 const bcrypt = require("bcrypt");
-const Mail = require("../auth/sms");
+
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { admin12 } = require("../auth/emailsender");
