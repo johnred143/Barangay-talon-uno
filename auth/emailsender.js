@@ -9,6 +9,7 @@ module.exports.sendMail = async (params) => {
       pass: process.env.PASSWORD,
     },
   });
+  // hello
   try {
     let info = await transporter.sendMail({
       from: process.env.EMAIL,
