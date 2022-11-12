@@ -28,11 +28,11 @@ const contact = (req, res) => {
     return res.status(200).json({ message: "login success" });
   }
 };
-
+//tz("Asia/Manila")
 const request = async (req, res) => {
   const { type, name, address, email, phone, purpose } = req.body;
   const uuid = require("uuid");
-  const RequestTime = moment().tz("Asia/Manila").format();
+  const RequestTime = moment().format('LLLL');
   const ref = uuid.v4();
   await dbcon();
   console.log("request");
