@@ -9,8 +9,8 @@ const { sendMail, send, admin12 } = require("../auth/emailsender");
 const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
-const moment = require("moment-timezone");
-
+const moment = require("moment");
+//removed tz
 const test = (req, res) => {
   console.log(req.user);
   // return res.send("Server Running...");
