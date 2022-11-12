@@ -70,11 +70,12 @@ const request = async (req, res) => {
 };
 
 // report page
+//.tz("Asia/Manila")
 const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
   const uuid = require("uuid");
-  const ReportTime = moment().tz("Asia/Manila").format();
+  const ReportTime = moment().format('LLLL');
   console.log("report");
   const ref = uuid.v4();
   try {
