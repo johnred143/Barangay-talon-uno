@@ -9,7 +9,7 @@ const { sendMail, send, admin12 } = require("../auth/emailsender");
 const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
-const moment = require("moment");
+const moment = require("moment-timezone");
 //removed tz
 const test = (req, res) => {
   console.log(req.user);
@@ -32,7 +32,7 @@ const contact = (req, res) => {
 const request = async (req, res) => {
   const { type, name, address, email, phone, purpose } = req.body;
   const uuid = require("uuid");
-  const RequestTime = moment().format('LLLL');
+  const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
   await dbcon();
   console.log("request");
@@ -75,7 +75,7 @@ const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
   const uuid = require("uuid");
-  const ReportTime = moment().format('LLLL');
+  const ReportTime = moment().tz("Asia/Manila").format();
   console.log("report");
   const ref = uuid.v4();
   try {
