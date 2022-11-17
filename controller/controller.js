@@ -10,7 +10,7 @@ const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
 const moment = require("moment-timezone");
-
+//removed tz
 const test = (req, res) => {
   console.log(req.user);
   // return res.send("Server Running...");
@@ -28,7 +28,7 @@ const contact = (req, res) => {
     return res.status(200).json({ message: "login success" });
   }
 };
-
+//tz("Asia/Manila")
 const request = async (req, res) => {
   const { type, name, address, email, phone, purpose } = req.body;
   const uuid = require("uuid");
@@ -70,6 +70,7 @@ const request = async (req, res) => {
 };
 
 // report page
+//.tz("Asia/Manila")
 const report1 = async (req, res) => {
   const { name, address, addressdetail, email, report, Image } = req.body;
   await dbcon();
