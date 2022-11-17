@@ -14,6 +14,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "https://barangay-talonuno.vercel.app",
+      "https://tatatalon-admin.vercel.app",
     ],
     methods: ["GET", "POST"],
   })

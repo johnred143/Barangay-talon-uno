@@ -335,6 +335,45 @@ const changepass = async (req, res) => {
     });
   }
 };
+
+const resetpasswordtoken = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    await dbcon();
+
+    const user = await User.findOne({ email });
+
+    // generate url for reset password
+    const token = await jwt.sign(
+      { id: user._id },
+      `${process.env.JWT_SECRET}`,
+      { length: 6 },
+      { expiresIn: "1h" }
+    );
+
+    if (email === user.email) {
+      // send url to email
+      await admin12({
+        to: email,
+        type: "Reset Password",
+        link: token,
+        midtext: "you have 1hr to change your password",
+      });
+
+      return res.json({
+        success: true,
+        msg: "Email has been sent! Please check your inbox.",
+      });
+    }
+  } catch (error) {
+    console.log("resetPasswordurl: ", error);
+    return res
+      .status(500)
+      .json({ success: false, error: error, msg: "Internal Server Error!" });
+  }
+};
+
 module.exports = {
   report1,
   login,
@@ -348,6 +387,6 @@ module.exports = {
   verify,
   verifyotp,
   updatepage,
-
+  resetpasswordtoken,
   genera2,
 };

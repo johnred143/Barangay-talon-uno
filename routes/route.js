@@ -13,7 +13,7 @@ const {
   verify,
   changepass,
   updatepage,
-
+  resetpasswordtoken,
   genera2,
 } = require("../controller/controller");
 const {
@@ -31,7 +31,7 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/", test);
+router.post("/resetpassword", resetpasswordtoken);
 router.get("/log", log);
 router.post("/changepassword", authenticateToken, changepass);
 router.post("/admin/update", updinator);
