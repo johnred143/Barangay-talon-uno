@@ -30,7 +30,34 @@ const contact = (req, res) => {
 };
 //tz("Asia/Manila")
 const request = async (req, res) => {
-  const { type, name, address, email, phone, purpose } = req.body;
+  const {
+    email,
+    irbi,
+    region,
+    province,
+    barangay,
+    date,
+    precint,
+    vrr,
+    contact,
+    lastname,
+    firstname,
+    middlename,
+    nickname,
+    age,
+    gender,
+    birthday,
+    status,
+    birthplace,
+    height,
+    weight,
+    provadd,
+    contactname,
+    relationship,
+    address,
+    contactpersonnumber,
+    res1,
+  } = req.body;
   const uuid = require("uuid");
   const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
@@ -49,7 +76,34 @@ const request = async (req, res) => {
       {
         $push: {
           request: [
-            { RequestTime, ref, type, name, address, email, phone, purpose },
+            {
+              ref,
+              irbi,
+              region,
+              province,
+              barangay,
+              date,
+              precint,
+              vrr,
+              contact,
+              lastname,
+              firstname,
+              middlename,
+              nickname,
+              age,
+              gender,
+              birthday,
+              status,
+              birthplace,
+              height,
+              weight,
+              provadd,
+              contactname,
+              relationship,
+              address,
+              contactpersonnumber,
+              res1,
+            },
           ],
         },
       },
