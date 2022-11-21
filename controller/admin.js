@@ -17,7 +17,7 @@ const log = async (req, res) => {
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
     const user = user1.length;
-    const penblotter = replog
+    const penblotter = blotterlog
     .map((i) => i.blotter.filter((blot) => blot.process === "Pending").length)
     .reduce((a, b) => a + b);
     const penrep = replog
