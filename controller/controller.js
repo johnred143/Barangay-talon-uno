@@ -83,9 +83,9 @@ const request = async (req, res) => {
               province,
               barangay,
               date,
-              precint,
-              vrr,
-              contact,
+              precint: Number(precint),
+              vrr: Number(precint),
+              contact: Number(precint),
               lastname,
               firstname,
               middlename,
@@ -95,13 +95,13 @@ const request = async (req, res) => {
               birthday,
               status,
               birthplace,
-              height,
-              weight,
+              height: Number(precint),
+              weight: Number(precint),
               provadd,
               contactname,
               relationship,
               address,
-              contactpersonnumber,
+              contactpersonnumber: Number(precint),
               res1,
             },
           ],
@@ -195,13 +195,13 @@ const blotter = async (req, res) => {
               complainant,
               date,
               address,
-              contact,
+              contact: Number(contact),
               complainedFirstname,
               complainedLastname,
               complainedMiddlename,
               complainedAddress,
 
-              complainedAge,
+              complainedAge: Number(complainedAge),
               description,
             },
           ],
@@ -416,8 +416,9 @@ const updatepage = async (req, res) => {
           image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
           number,
         },
-      },{
-        new : true
+      },
+      {
+        new: true,
       }
     );
 

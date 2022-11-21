@@ -105,7 +105,7 @@ const blotter = new Schema(
         complainedFirstname: { type: String, required: true },
         complainedLastname: { type: String, required: true },
         complainedMiddlename: { type: String,default:"N/A" },
-        complainedNumber: { type: Number, required: true },
+       
         complainedAddress: { type: String, required: true },
         complainedAge: { type: Number, required: true },
         description: { type: String, required: true },
