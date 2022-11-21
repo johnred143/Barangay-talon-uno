@@ -9,35 +9,28 @@ const { admin12 } = require("../auth/emailsender");
 const log = async (req, res) => {
   await dbcon();
   {
-    const blotterlog = await Request.find();
     const reqlog = await Request.find();
     const user1 = await User.find();
     const replog = await Reports.find();
-    const sumblotter = blotterlog.map((i) => i.blotter.length).reduce((a, b) => a + b);
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
     const user = user1.length;
-    const penblotter = blotterlog
-    .map((i) => i.blotter.filter((blot) => blot.process === "Pending").length)
-    .reduce((a, b) => a + b);
+    
     const penrep = replog
       .map((i) => i.reports.filter((rep) => rep.process === "Pending").length)
       .reduce((a, b) => a + b);
     const penreq = reqlog
       .map((i) => i.request.filter((req) => req.process === "Pending").length)
       .reduce((a, b) => a + b);
-    const total = penrep + penreq + penblotter;
+    const total = penrep + penreq;
 
     return res.status(200).json({
-      blotterlog,
       reqlog,
       replog,
-      sumblotter,
       sumreq,
       sumrep,
       total,
       penrep,
-      penblotter,
       penreq,
       user,
     }); //password email match
