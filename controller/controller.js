@@ -222,6 +222,7 @@ const login = async (req, res) => {
       email: user.email,
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
+      image: user.image,
     }); //password email match
   }
 };
