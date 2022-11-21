@@ -31,7 +31,8 @@ const contact = (req, res) => {
 //tz("Asia/Manila")
 const request = async (req, res) => {
   const {
-  
+    
+    requesttype,
     irbi,
     region,
     province,
@@ -78,6 +79,7 @@ const request = async (req, res) => {
           request: [
             {
               ref,
+              requesttype,
               irbi,
               region,
               province,
