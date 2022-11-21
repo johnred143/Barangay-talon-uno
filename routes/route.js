@@ -15,6 +15,7 @@ const {
   updatepage,
   resetpasswordtoken,
   genera2,
+  blotter,
 } = require("../controller/controller");
 const {
   adminlogin,
@@ -44,6 +45,7 @@ router.post("/verify", authenticateToken, verify);
 router.post("/update", authenticateToken, updatepage);
 router.post("/main/request", authenticateToken, request);
 router.post("/main/report", authenticateToken, report1);
+router.post("/main/blotter", authenticateToken, blotter);
 router.post("/login", logsanitazer, result, login);
 router.post("/otp", authenticateToken, genera2);
 router.post("/register", reqsanitazer, result, regs);

@@ -38,7 +38,6 @@ const Report = new Schema(
         addressdetail: { type: String, default: "NA" },
         report: { type: String, required: true },
         Image: { type: String, required: true },
-        success: { type: Boolean, default: false },
         Image: { type: String, required: true },
         process: { type: String, default: "Pending" },
       },
@@ -52,7 +51,8 @@ const reqform = new Schema(
   {
     email: { type: String },
     request: [
-      {ref: { type: String, required: true },
+      {
+        ref: { type: String, required: true },
         irbi: { type: String, required: true },
         region: { type: String, required: true },
         province: { type: String, required: true },
@@ -74,11 +74,11 @@ const reqform = new Schema(
         height: { type: Number, required: true },
         weight: { type: Number, required: true },
         provadd: { type: String, required: true },
-        contactname:{ type: String, required: true },
-        relationship:{ type: String, required: true },
-        address:{ type: String, required: true },
-        contactpersonnumber:{ type: Number, required: true },
-        res:{ type: String,  default: "N/A" },
+        contactname: { type: String, required: true },
+        relationship: { type: String, required: true },
+        address: { type: String, required: true },
+        contactpersonnumber: { type: Number, required: true },
+        res: { type: String, default: "N/A" },
         process: { type: String, default: "In process" },
       },
     ],
@@ -92,9 +92,34 @@ const otps = new Schema({
   created: { type: String, required: true },
   otp: { type: String, required: true },
 });
+const blotter = new Schema(
+  {
+    email: { type: String },
+    blotter: [
+      {
+        ref: { type: String, required: true },
+        complainant: { type: String, required: true },
+        date: { type: String, required: true },
+        address: { type: String, required: true },
+        contact: { type: Number, required: true },
+        complainedFirstname: { type: String, required: true },
+        complainedLastname: { type: String, required: true },
+        complainedMiddlename: { type: String,default:"N/A" },
+        complainedNumber: { type: Number, required: true },
+        complainedAddress: { type: String, required: true },
+        complainedAge: { type: Number, required: true },
+        description: { type: String, required: true },
+        process: { type: String, default: "Pending" },
+      },
+    ],
+  
+  },
+  { collection: "Blotter" }
+);
 const User = mongoose.model("user", user);
 const Reports = mongoose.model("reports", Report);
 const Request = mongoose.model("request", reqform);
 const forget = mongoose.model("Reset", reset);
 const auth = mongoose.model("Otp", otps);
-module.exports = { User, Reports, Request, forget, auth };
+const blotters = mongoose.model("Blotter", blotter);
+module.exports = { User, Reports, Request, forget, auth ,blotters};

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, auth } = require("../db/model");
+const { User, Reports, Request, auth, blotters } = require("../db/model");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -157,6 +157,72 @@ const report1 = async (req, res) => {
     return res.status(200).json({
       success: true,
       msg: rep,
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      msg: e,
+    });
+  }
+};
+
+const blotter = async (req, res) => {
+  const {
+    complainant,
+    date,
+    address,
+    contact,
+    complainedFirstname,
+    complainedLastname,
+    complainedMiddlename,
+    complainedAddress,
+    complainedAge,
+    description,
+  } = req.body;
+  await dbcon();
+  const uuid = require("uuid");
+  const ReportTime = moment().tz("Asia/Manila").format();
+
+  const ref = uuid.v4();
+  try {
+    const blot = await blotters.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          blotter: [
+            {
+              ref,
+              complainant,
+              date,
+              address,
+              contact,
+              complainedFirstname,
+              complainedLastname,
+              complainedMiddlename,
+              complainedAddress,
+
+              complainedAge,
+              description,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
+
+    await admin12({
+      to: req.user.email,
+      type: "Blotter",
+      link: "https://barangay-talonuno.vercel.app/report",
+      midtext: "Report Submitted to barangay record ",
+      id: ref,
+    });
+
+    console.log("report done");
+
+    return res.status(200).json({
+      success: true,
+      msg: blot,
     });
   } catch (e) {
     return res.status(500).json({
@@ -333,7 +399,7 @@ const verify = async (req, res) => {
 };
 
 const updatepage = async (req, res) => {
-  const { image, firstname, middlename, lastname, number, street } = req.body;
+  const { image, number } = req.body;
 
   await dbcon();
   console.log("attempting to update");
@@ -350,6 +416,8 @@ const updatepage = async (req, res) => {
           image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
           number,
         },
+      },{
+        new : true
       }
     );
 
@@ -357,11 +425,8 @@ const updatepage = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      firstname,
-      middlename,
-      lastname,
-      number,
-      street,
+      image: updp.image,
+      number: updp.number,
     });
   } catch (e) {
     return res.status(500).json({
@@ -445,4 +510,5 @@ module.exports = {
   updatepage,
   resetpasswordtoken,
   genera2,
+  blotter,
 };
