@@ -420,7 +420,7 @@ const updatepage = async (req, res) => {
         },
       },
       {
-        new: true,
+        new: true,  upsert: true
       }
     );
 
