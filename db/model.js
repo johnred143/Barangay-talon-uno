@@ -53,6 +53,7 @@ const reqform = new Schema(
     request: [
       {
         ref: { type: String, required: true },
+        requesttype: { type: String, required: true },
         irbi: { type: String, required: true },
         region: { type: String, required: true },
         province: { type: String, required: true },
