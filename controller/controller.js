@@ -64,7 +64,7 @@ const request = async (req, res) => {
   await dbcon();
   console.log("request");
   await admin12({
-    to: email,
+    to: req.user.email,
     type: "Request",
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
