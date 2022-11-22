@@ -51,7 +51,7 @@ const reqform = new Schema(
   {
     email: { type: String },
     request: [
-      {
+      {type: { type: String, required: true },
         ref: { type: String, required: true },
         irbi: { type: String, required: true },
         region: { type: String, required: true },

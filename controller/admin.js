@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request } = require("../db/model");
+const { User, Reports, Request, blotters } = require("../db/model");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -12,8 +12,12 @@ const log = async (req, res) => {
     const reqlog = await Request.find();
     const user1 = await User.find();
     const replog = await Reports.find();
+    const blotlog = await blotters.find();
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
+    const sumblot = blotlog
+      .map((i) => i.blotter.length)
+      .reduce((a, b) => a + b);
     const user = user1.length;
     const penrep = replog
       .map((i) => i.reports.filter((rep) => rep.process === "Pending").length)
@@ -21,16 +25,23 @@ const log = async (req, res) => {
     const penreq = reqlog
       .map((i) => i.request.filter((req) => req.process === "Pending").length)
       .reduce((a, b) => a + b);
-    const total = penrep + penreq;
+    const penblot = blotlog
+      .map((i) => i.blotter.filter((blot) => blot.process === "Pending").length)
+      .reduce((a, b) => a + b);
+
+    const total = penrep + penreq + penblot;
 
     return res.status(200).json({
       reqlog,
       replog,
+      blotlog,
       sumreq,
       sumrep,
+      sumblot,
       total,
       penrep,
       penreq,
+      penblot,
       user,
     }); //password email match
   }
@@ -117,5 +128,30 @@ const reportinator = async (req, res) => {
 
   return res.json({ update: false });
 };
+const blotinator = async (req, res) => {
+  const { ref, status, email } = req.body;
+  await dbcon();
+  {
+    const replog = await blotters.findOneAndUpdate(
+      { email, "request._id": ref },
+      { $set: { "request.$.process": status } },
+      { new: true }
+    );
+    await admin12({
+      to: email,
+      type: "Blotter",
+      link: status,
+      midtext:
+        "Your Blotter Report Has been Updated please contact Barangay official for more info",
+      id: ref,
+    });
+    if (replog) {
+      return res.json({ update: true });
+    }
+  }
 
-module.exports = { adminlogin, log, updinator, reportinator };
+  return res.json({ update: false });
+};
+
+
+module.exports = { adminlogin, log, updinator, reportinator,blotinator };

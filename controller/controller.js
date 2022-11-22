@@ -30,8 +30,7 @@ const contact = (req, res) => {
 };
 //tz("Asia/Manila")
 const request = async (req, res) => {
-  const {
-  
+  const {type,
     irbi,
     region,
     province,
@@ -76,7 +75,7 @@ const request = async (req, res) => {
       {
         $push: {
           request: [
-            {
+            {type,
               ref,
               irbi,
               region,
@@ -103,6 +102,7 @@ const request = async (req, res) => {
               address,
               contactpersonnumber: Number(contactpersonnumber),
               res1,
+              RequestTime,
             },
           ],
         },
