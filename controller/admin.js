@@ -133,7 +133,7 @@ const blotinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   {
-    const blotlog = await blotters.findOneAndUpdate(
+    const blotterlog = await blotters.findOneAndUpdate(
       { email, "blotter._id": ref },
       { $set: { "blotter.$.process": status } },
       { new: true }
@@ -146,7 +146,7 @@ const blotinator = async (req, res) => {
         "Your Blotter Report Has been Updated please contact Barangay official for more info",
       id: ref,
     });
-    if (blotlog) {
+    if (blotterlog) {
       return res.json({ update: true });
     }
   }
