@@ -19,6 +19,7 @@ const log = async (req, res) => {
       .map((i) => i.blotter.length)
       .reduce((a, b) => a + b);
     const user = user1.length;
+
     const penrep = replog
       .map((i) => i.reports.filter((rep) => rep.process === "Pending").length)
       .reduce((a, b) => a + b);
@@ -132,9 +133,9 @@ const blotinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   {
-    const replog = await blotters.findOneAndUpdate(
-      { email, "request._id": ref },
-      { $set: { "request.$.process": status } },
+    const blotlog = await blotters.findOneAndUpdate(
+      { email, "blotter._id": ref },
+      { $set: { "blotter.$.process": status } },
       { new: true }
     );
     await admin12({
@@ -145,7 +146,7 @@ const blotinator = async (req, res) => {
         "Your Blotter Report Has been Updated please contact Barangay official for more info",
       id: ref,
     });
-    if (replog) {
+    if (blotlog) {
       return res.json({ update: true });
     }
   }
@@ -153,5 +154,4 @@ const blotinator = async (req, res) => {
   return res.json({ update: false });
 };
 
-
-module.exports = { adminlogin, log, updinator, reportinator,blotinator };
+module.exports = { adminlogin, log, updinator, reportinator, blotinator };
