@@ -21,7 +21,7 @@ const {
   adminlogin,
   log,
   updinator,
-  reportinator,
+  reportinator,blotinator
 } = require("../controller/admin");
 const {
   logsanitazer,
@@ -37,6 +37,7 @@ router.get("/log", log);
 router.post("/changepassword", authenticateToken, changepass);
 router.post("/admin/update", updinator);
 router.post("/admin/report", reportinator);
+router.post("/admin/blotter", blotinator);
 router.post("/adminlogin", adminlogin);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
