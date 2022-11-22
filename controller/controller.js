@@ -31,7 +31,6 @@ const contact = (req, res) => {
 //tz("Asia/Manila")
 const request = async (req, res) => {
   const {
-  
     irbi,
     region,
     province,
@@ -76,7 +75,8 @@ const request = async (req, res) => {
       {
         $push: {
           request: [
-            {type,
+            {
+              type,
               ref,
               requesttype,
               irbi,
@@ -135,12 +135,23 @@ const report1 = async (req, res) => {
   console.log("report");
   const ref = uuid.v4();
   try {
+    const upload = await cloudinary.uploader.upload(Image, {
+      folder: `report/`,
+    });
     const rep = await Reports.findOneAndUpdate(
       { email: req.user.email },
       {
         $push: {
           reports: [
-            { ReportTime, ref, name, address, addressdetail, report, Image },
+            {
+              ReportTime,
+              ref,
+              name,
+              address,
+              addressdetail,
+              report,
+              Image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
+            },
           ],
         },
       },
@@ -420,7 +431,7 @@ const updatepage = async (req, res) => {
         },
       },
       {
-        new: true
+        new: true,
       }
     );
 
