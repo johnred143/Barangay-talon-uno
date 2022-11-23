@@ -67,6 +67,7 @@ module.exports.send = async (params) => {
     return false;
   }
 };
+
 module.exports.admin12 = async (params) => {
   const porter = nodemailer.createTransport({
     service: "gmail",
@@ -85,7 +86,7 @@ module.exports.admin12 = async (params) => {
       class="container"
       style="max-width: 90%; margin: auto; padding-top: 20px"
     >
-      <h2> ${params.type} Updated</h2>
+      <h2> ${params.type} ${params.reqtype}</h2>
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
       <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${params.link}</h1>

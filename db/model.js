@@ -38,7 +38,7 @@ const Report = new Schema(
         addressdetail: { type: String, default: "NA" },
         report: { type: String, required: true },
         Image: { type: String, required: true },
-        Image: { type: String, required: true },
+        Image: { type: String, required: false },
         process: { type: String, default: "Pending" },
       },
     ],
