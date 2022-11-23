@@ -134,8 +134,8 @@ const blotinator = async (req, res) => {
   await dbcon();
   {
     const blotterlog = await blotters.findOneAndUpdate(
-      { email, "blotter._id": ref },
-      { $set: { "blotter.$.process": status } },
+      { email, "Blotter._id": ref },
+      { $set: { "Blotter.$.process": status } },
       { new: true }
     );
     await admin12({
