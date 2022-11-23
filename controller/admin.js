@@ -110,7 +110,7 @@ const reportinator = async (req, res) => {
   await dbcon();
   {
     const replog = await Request.findOneAndUpdate(
-      { email, "request._id": ref },
+      { email, "request.ref": ref },
       { $set: { "request.$.process": status } },
       { new: true }
     );
@@ -134,7 +134,7 @@ const blotinator = async (req, res) => {
   await dbcon();
   {
     const blotterlog = await blotters.findOneAndUpdate(
-      { email, "blotter._id": ref },
+      { email, "blotter.ref": ref },
       { $set: { "blotter.$.process": status } },
       { new: true }
     );
