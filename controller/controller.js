@@ -223,10 +223,10 @@ const blotter = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    await admin12({
+    await send({
       to: req.user.email,
       type: "Blotter",
-      link: "https://barangay-talonuno.vercel.app/report",
+      link: "https://barangay-talonuno.vercel.app/blotter",
       midtext: "Report Submitted to barangay record ",
       id: ref,
     });

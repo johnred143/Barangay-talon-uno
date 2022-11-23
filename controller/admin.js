@@ -104,13 +104,13 @@ const updinator = async (req, res) => {
     return res.json({ update: false, error });
   }
 };
-//this is update
+//this is request
 const reportinator = async (req, res) => {
   const { ref, status, email } = req.body;
   await dbcon();
   {
     const replog = await Request.findOneAndUpdate(
-      { email, "request._id": ref },
+      { email, "request.ref": ref },
       { $set: { "request.$.process": status } },
       { new: true }
     );
