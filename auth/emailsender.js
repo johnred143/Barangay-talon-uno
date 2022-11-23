@@ -67,6 +67,39 @@ module.exports.send = async (params) => {
     return false;
   }
 };
+module.exports.notif = async (params) => {
+  const porter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASSWORD,
+    },
+  });
+  try {
+    let info = await porter.sendMail({
+      from: process.env.EMAIL,
+      to: "brgytalonuno@gmail.com",
+      subject: "BARANGAY TALON UNO",
+      html: `
+      <div
+      class="container"
+      style="max-width: 90%; margin: auto; padding-top: 20px"
+    >
+      <h2>Someone Submitted A ${params.sub} </h2>
+  
+      <p style="margin-bottom: 30px;">${params.sub}Submitted by ${params.to} </p>
+    
+      
+ </div>
+     
+      `,
+    });
+    return info;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
 module.exports.admin12 = async (params) => {
   const porter = nodemailer.createTransport({
     service: "gmail",

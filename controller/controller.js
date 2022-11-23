@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail, send, admin12 } = require("../auth/emailsender");
+const { sendMail, send, admin12, notif } = require("../auth/emailsender");
 const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
@@ -68,6 +68,10 @@ const request = async (req, res) => {
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
     id: ref,
+  });
+  await notif({
+    to: req.user.email,
+    type: "Request",
   });
   try {
     const result = await Request.updateOne(
@@ -157,6 +161,7 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+
     await admin12({
       to: email,
       type: "Report",
@@ -164,7 +169,10 @@ const report1 = async (req, res) => {
       midtext: "Report Submitted to local Authority",
       id: ref,
     });
-
+    await notif({
+      to: req.user.email,
+      type: "Report",
+    });
     console.log("report done");
 
     return res.status(200).json({
