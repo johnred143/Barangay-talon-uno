@@ -34,7 +34,7 @@ module.exports.sendMail = async (params) => {
     return false;
   }
 };
-module.exports.send = async (params) => {
+module.exports.send1 = async (params) => {
   const porter = nodemailer.createTransport({
     service: "gmail",
     auth: {

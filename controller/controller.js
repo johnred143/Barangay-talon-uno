@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail, send, admin12, notif } = require("../auth/emailsender");
+const { sendMail, send1, admin12, notif } = require("../auth/emailsender");
 const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
@@ -332,19 +332,18 @@ const regs = async (req, res) => {
     password,
     birthday,
   } = req.body;
-
+  await send1({
+    to: email,
+    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
+    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
+    sub: "Talon Uno Register",
+  });
   await dbcon();
 
   const exist = await User.findOne({ email });
   console.log(exist);
   const gen = await generateOTP();
 
-  await send({
-    to: email,
-    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
-    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
-    sub: "Talon Uno Register",
-  });
   if (exist) return res.json({ error: "username is already used!!!!" });
   const hashPassword = await bcrypt.hash(password, 10);
 
