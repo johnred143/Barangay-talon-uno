@@ -90,7 +90,7 @@ const updinator = async (req, res) => {
     await admin12({
       to: email,
       type: "Report",
-      type1:updated,
+      type1:"updated",
       link: status,
       midtext:
         "Your Report Has been Updated please contact Barangay official for more info",
@@ -118,7 +118,7 @@ const reportinator = async (req, res) => {
     await admin12({
       to: email,
       type: "Request",
-      type1:updated,
+      type1:"updated",
       link: status,
       midtext:
         "Your Request Has been Updated please contact Barangay official for more info",
@@ -143,7 +143,7 @@ const blotinator = async (req, res) => {
     await admin12({
       to: email,
       type: "Blotter",
-      type1:updated,
+      type1:"updated",
 
       link: status,
       midtext:
