@@ -332,14 +332,14 @@ const regs = async (req, res) => {
     password,
     birthday,
   } = req.body;
-
-  await dbcon();
   await send({
     to: req.user.email,
     OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
     mid: "Please click the link provided below to verify that your now a member of talon uno family ",
     sub: "Talon Uno Register",
   });
+  await dbcon();
+
   const exist = await User.findOne({ email });
   console.log(exist);
   const gen = await generateOTP();
