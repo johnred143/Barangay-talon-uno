@@ -334,7 +334,12 @@ const regs = async (req, res) => {
   } = req.body;
 
   await dbcon();
-
+  await send({
+    to: req.user.email,
+    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
+    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
+    sub: "Talon Uno Register",
+  });
   const exist = await User.findOne({ email });
   console.log(exist);
   const gen = await generateOTP();
@@ -356,12 +361,7 @@ const regs = async (req, res) => {
     birthday,
     token: gen,
   }).save();
-  await send({
-    to: req.user.email,
-    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
-    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
-    sub: "Talon Uno Register",
-  });
+
   // const regToken = await generateAccessToken(user.email);
   // console.log("register: ", user.email);
 
