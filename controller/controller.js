@@ -168,7 +168,7 @@ const report1 = async (req, res) => {
       id: ref,
     });
     await notif({
-      to: req.user.lastname,
+      to: name,
       type: "Report",
       type1: "submitted",
       link: "https://tatatalon-admin.vercel.app/login",
