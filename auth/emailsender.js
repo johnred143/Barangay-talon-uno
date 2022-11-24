@@ -85,7 +85,7 @@ module.exports.admin12 = async (params) => {
       class="container"
       style="max-width: 90%; margin: auto; padding-top: 20px"
     >
-      <h2> ${params.type} has ${params.type1} Updated</h2>
+      <h2> ${params.type} has ${params.type1} </h2>
   
       <p style="margin-bottom: 30px;">${params.midtext} </p>
       <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${params.link}</h1>
