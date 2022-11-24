@@ -38,7 +38,7 @@ const Report = new Schema(
         addressdetail: { type: String, default: "NA" },
         report: { type: String, required: true },
         Image: { type: String, required: true },
-        Image: { type: String },
+        Image: { type: String, required: true },
         process: { type: String, default: "Pending" },
       },
     ],
@@ -51,8 +51,7 @@ const reqform = new Schema(
   {
     email: { type: String },
     request: [
-      {
-        type: { type: String, required: true },
+      {type: { type: String, required: true },
         ref: { type: String, required: true },
         requesttype: { type: String, required: true },
         irbi: { type: String, required: true },
@@ -106,14 +105,15 @@ const blotter = new Schema(
         contact: { type: Number, required: true },
         complainedFirstname: { type: String, required: true },
         complainedLastname: { type: String, required: true },
-        complainedMiddlename: { type: String, default: "N/A" },
-
+        complainedMiddlename: { type: String,default:"N/A" },
+       
         complainedAddress: { type: String, required: true },
         complainedAge: { type: Number, required: true },
         description: { type: String, required: true },
         process: { type: String, default: "Pending" },
       },
     ],
+  
   },
   { collection: "Blotter" }
 );
@@ -123,4 +123,4 @@ const Request = mongoose.model("request", reqform);
 const forget = mongoose.model("Reset", reset);
 const auth = mongoose.model("Otp", otps);
 const blotters = mongoose.model("Blotter", blotter);
-module.exports = { User, Reports, Request, forget, auth, blotters };
+module.exports = { User, Reports, Request, forget, auth ,blotters};

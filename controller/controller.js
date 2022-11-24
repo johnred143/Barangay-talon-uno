@@ -65,7 +65,6 @@ const request = async (req, res) => {
   await admin12({
     to: req.user.email,
     type: "Request",
-    reqtype: submitted,
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
     id: ref,
@@ -161,7 +160,6 @@ const report1 = async (req, res) => {
     await admin12({
       to: email,
       type: "Report",
-      reqtype: submitted,
       link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Report Submitted to local Authority",
       id: ref,
@@ -227,7 +225,6 @@ const blotter = async (req, res) => {
 
     await send({
       to: req.user.email,
-      reqtype: submitted,
       type: "Blotter",
       link: "https://barangay-talonuno.vercel.app/blotter",
       midtext: "Report Submitted to barangay record ",
