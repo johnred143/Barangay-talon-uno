@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
-const { sendMail, send, admin12,notif } = require("../auth/emailsender");
+const { sendMail, send, admin12, notif } = require("../auth/emailsender");
 const cloudinary = require("../auth/cloudinary");
 const { generateOTP } = require("../auth/oth");
 
@@ -65,7 +65,7 @@ const request = async (req, res) => {
   await admin12({
     to: req.user.email,
     type: "Request",
-    type1:"submitted",
+    type1: "submitted",
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
     id: ref,
@@ -168,13 +168,12 @@ const report1 = async (req, res) => {
       id: ref,
     });
     await notif({
-      to: email,
+      to: req.user.name,
       type: "Report",
       type1: "submitted",
       link: "https://tatatalon-admin.vercel.app/login",
       midtext: "Someone Submitted a report please process immediately",
       id: ref,
-   
     });
 
     console.log("report done");
