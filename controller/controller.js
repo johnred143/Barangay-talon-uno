@@ -31,6 +31,7 @@ const contact = (req, res) => {
 //tz("Asia/Manila")
 const request = async (req, res) => {
   const {
+    type,
     irbi,
     region,
     province,
@@ -76,18 +77,16 @@ const request = async (req, res) => {
       {
         $push: {
           request: [
-            {
+            {ref,
               type,
-              ref,
-              requesttype,
               irbi,
               region,
               province,
               barangay,
               date,
-              precint: Number(precint),
-              vrr: Number(vrr),
-              contact: Number(contact),
+              precint,
+              vrr,
+              contact,
               lastname,
               firstname,
               middlename,
@@ -97,13 +96,13 @@ const request = async (req, res) => {
               birthday,
               status,
               birthplace,
-              height: Number(height),
-              weight: Number(weight),
+              height,
+              weight,
               provadd,
               contactname,
               relationship,
               address,
-              contactpersonnumber: Number(contactpersonnumber),
+              contactpersonnumber,
               res1,
               RequestTime,
             },
