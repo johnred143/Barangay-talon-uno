@@ -339,12 +339,6 @@ const regs = async (req, res) => {
   console.log(exist);
   const gen = await generateOTP();
 
-  await send({
-    to: email,
-    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
-    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
-    sub: "Talon Uno Register",
-  });
   if (exist) return res.json({ error: "username is already used!!!!" });
   const hashPassword = await bcrypt.hash(password, 10);
 
@@ -362,7 +356,12 @@ const regs = async (req, res) => {
     birthday,
     token: gen,
   }).save();
-
+  await send({
+    to: req.user.email,
+    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
+    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
+    sub: "Talon Uno Register",
+  });
   // const regToken = await generateAccessToken(user.email);
   // console.log("register: ", user.email);
 
