@@ -168,12 +168,12 @@ const report1 = async (req, res) => {
       id: ref,
     });
     await notif({
-      to: name,
+      to: email,
       type: "Report",
       type1: "submitted",
-      link: "https://tatatalon-admin.vercel.app/login",
+
+      link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Someone Submitted a report please process immediately",
-      id: ref,
     });
 
     console.log("report done");
@@ -332,18 +332,19 @@ const regs = async (req, res) => {
     password,
     birthday,
   } = req.body;
- 
+
   await dbcon();
-  await send({
-    to: req.user.email,
-    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
-    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
-    sub: "Talon Uno Register",
-  });
+
   const exist = await User.findOne({ email });
   console.log(exist);
   const gen = await generateOTP();
 
+  await send({
+    to: email,
+    OTP: "https://barangay-talonuno.vercel.app/accountconfirmed",
+    mid: "Please click the link provided below to verify that your now a member of talon uno family ",
+    sub: "Talon Uno Register",
+  });
   if (exist) return res.json({ error: "username is already used!!!!" });
   const hashPassword = await bcrypt.hash(password, 10);
 
