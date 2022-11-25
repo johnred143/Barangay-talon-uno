@@ -80,6 +80,7 @@ const request = async (req, res) => {
         $push: {
           request: [
             {
+              ref,
               requestTime: RequestTime,
               type,
               irbi: Number(irbi),
@@ -108,7 +109,6 @@ const request = async (req, res) => {
               address,
               number: Number(number),
               res1,
-             
             },
           ],
           $inc: { irbi: 1 },
@@ -116,7 +116,7 @@ const request = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    
+
     console.log("request done");
 
     return res.status(200).json({

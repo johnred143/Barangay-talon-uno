@@ -50,7 +50,7 @@ const reqform = new Schema(
   {
     email: { type: String },
     request: [
-      {
+      { ref: { type: String, required: true },
         requestTime: { type: String, required: true },
         type: { type: String, required: true },
         irbi: { type: Number, required: true },
