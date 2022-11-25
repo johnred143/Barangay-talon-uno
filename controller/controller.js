@@ -80,7 +80,7 @@ const request = async (req, res) => {
         $push: {
           request: [
             {
-              requestTime:RequestTime,
+              requestTime: RequestTime,
               type,
               irbi: Number(irbi),
               date,
@@ -108,6 +108,7 @@ const request = async (req, res) => {
               address,
               number: Number(number),
               res1,
+              process,
             },
           ],
           $inc: { irbi: 1 },

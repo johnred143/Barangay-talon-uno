@@ -79,6 +79,7 @@ const reqform = new Schema(
         address: { type: String, required: true },
         number: { type: Number, required: true },
         res1: { type: String, required: true },
+        process: { type: String, default: "Pending" },
       },
     ],
   },
