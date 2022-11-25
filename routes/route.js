@@ -36,7 +36,7 @@ router.get("/", test);
 router.post("/resetpassword", resetpasswordtoken);
 router.get("/log", log);
 router.post("/changepassword", authenticateToken, changepass);
-router.post("/admin/request", updinator);
+router.post("/admin/update", updinator);
 router.post("/admin/report", reportinator);
 router.post("/admin/blotter", blotinator);
 router.post("/adminlogin", adminlogin);
