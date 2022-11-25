@@ -108,7 +108,7 @@ const request = async (req, res) => {
               address,
               number: Number(number),
               res1,
-              process,
+             
             },
           ],
           $inc: { irbi: 1 },
@@ -116,6 +116,7 @@ const request = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+    
     console.log("request done");
 
     return res.status(200).json({
