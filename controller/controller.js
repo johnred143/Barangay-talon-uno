@@ -319,6 +319,7 @@ const login = async (req, res) => {
       contact: user.number,
       address: user.street + "," + user.barangay + "," + user.city,
       image: user.image,
+      Image:user.Image,
     }); //password email match
   }
 };
