@@ -173,7 +173,7 @@ const report1 = async (req, res) => {
       id: ref,
     });
     await notif({
-      to: email,
+      to: req.user.firstname,
       type: "Report",
       type1: "submitted",
 
@@ -195,7 +195,7 @@ const report1 = async (req, res) => {
   }
 };
 
-const blotter = async (req, res) => {
+const blotter1 = async (req, res) => {
   const {
     complainant,
     date,
@@ -214,7 +214,7 @@ const blotter = async (req, res) => {
 
   const ref = uuid.v4();
   try {
-    const blot = await blotters.findOneAndUpdate(
+    const rep = await blotters.findOneAndUpdate(
       { email: req.user.email },
       {
         $push: {
@@ -229,7 +229,7 @@ const blotter = async (req, res) => {
               complainedLastname,
               complainedMiddlename,
               complainedAddress,
-              ReportTime,
+              RequestTime: ReportTime,
               complainedAge: Number(complainedAge),
               description,
             },
@@ -238,8 +238,7 @@ const blotter = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-
-    await send({
+    await admin12({
       to: req.user.email,
       type: "Blotter",
       type1: "submitted",
@@ -247,12 +246,20 @@ const blotter = async (req, res) => {
       midtext: "Report Submitted to barangay record ",
       id: ref,
     });
+    await notif({
+      to: req.user.firstname,
+      type: "Blotter",
+      type1: "submitted",
+
+      link: "https://barangay-talonuno.vercel.app/main/blotter",
+      midtext: "Someone Submitted a blotter please process immediately",
+    });
 
     console.log("report done");
 
     return res.status(200).json({
       success: true,
-      msg: blot,
+      msg: rep,
     });
   } catch (e) {
     return res.status(500).json({
@@ -540,5 +547,5 @@ module.exports = {
   updatepage,
   resetpasswordtoken,
   genera2,
-  blotter,
+  blotter1,
 };
