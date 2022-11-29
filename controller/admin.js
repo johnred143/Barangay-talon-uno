@@ -34,29 +34,41 @@ const log = async (req, res) => {
 
     const total = penrep + penreq + penblot;
     const rep = await Reports.find();
-    const sortreport = rep.map((i) =>
-      i.reports.sort(
+    const sortreport = rep.map((i) => ({
+      ...i.toObject(),
+      reports: i.reports.sort(
         (a, b) =>
           new moment(b.ReportTime).format("YYYYMMDD") -
           new moment(a.ReportTime).format("YYYYMMDD")
-      )
-    );
-    const req = await Request.find();
-    const sortRequest = req.map((i) =>
-      i.request.sort(
+      ),
+    }));
+    ({
+      ...i.toObject(),
+      request: i.request.sort(
         (a, b) =>
           new moment(b.requestTime).format("YYYYMMDD") -
           new moment(a.requestTime).format("YYYYMMDD")
-      )
-    );
+      ),
+    });
+    const req = await Request.find();
+    const sortRequest = req.map((i) => ({
+      ...i.toObject(),
+      request: i.request.sort(
+        (a, b) =>
+          new moment(b.requestTime).format("YYYYMMDD") -
+          new moment(a.requestTime).format("YYYYMMDD")
+      ),
+    }));
+
     const blots = await blotters.find();
-    const sortblot = blots.map((i) =>
-      i.blotter.sort(
+    const sortblot = blots.map((i) => ({
+      ...i.toObject(),
+      blotte: i.blotte.sort(
         (a, b) =>
           new moment(b.RequestTime).format("YYYYMMDD") -
           new moment(a.RequestTime).format("YYYYMMDD")
-      )
-    );
+      ),
+    }));
     return res.status(200).json({
       blotlog,
       sumreq,

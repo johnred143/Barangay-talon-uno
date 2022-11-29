@@ -510,16 +510,17 @@ const resetpasswordtoken = async (req, res) => {
       `${process.env.JWT_SECRET}`,
       { expiresIn: "1h" }
     );
-
+    const linksend =
+      "https://barangay-talonuno.vercel.app/reset=password/" + token;
     if (email === user.email) {
       // send url to email
       await admin12({
         to: email,
         type: "Reset Password",
-        link: "https://barangay-talonuno.vercel.app/reset=password/"+token,
+        link: linksend,
         midtext: "you have 1hr to change your password",
       });
-
+      console.log(linksend);
       return res.json({
         success: true,
         msg: "Email has been sent! Please check your inbox.",
