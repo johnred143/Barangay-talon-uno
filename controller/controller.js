@@ -478,7 +478,9 @@ const changepass = async (req, res) => {
 
   await dbcon();
   {
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email: req.user.email }).select(
+      "+password"
+    );
 
     const pass = await bcrypt.compare(password, user.password); //password
     if (!pass) return res.status(401).json({ login: "incorrect password" });
@@ -501,12 +503,11 @@ const resetpasswordtoken = async (req, res) => {
     await dbcon();
 
     const user = await User.findOne({ email });
-
+    console.log(user);
     // generate url for reset password
     const token = await jwt.sign(
       { id: user._id },
       `${process.env.JWT_SECRET}`,
-      { length: 6 },
       { expiresIn: "1h" }
     );
 
@@ -531,6 +532,75 @@ const resetpasswordtoken = async (req, res) => {
       .json({ success: false, error: error, msg: "Internal Server Error!" });
   }
 };
+const verifyUrlReset = async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    // verify token
+    await jwt.verify(
+      token,
+      `${process.env.JWT_SECRET}`,
+      async (err, decode) => {
+        // redirection error
+        if (err) {
+          if (err?.message === "jwt expired")
+            return res.json({ success: false, msg: "Token has expired!" });
+          if (err?.message === "jwt malformed")
+            return res.json({ success: false, msg: "Invalid token!" });
+        }
+
+        // token verified generate new token to reset expiry
+        const resetToken = await jwt.sign(
+          { id: decode.id },
+          `${process.env.JWT_SECRET}`,
+          { expiresIn: "1d" }
+        );
+
+        return res.json({ success: true, msg: "Token verified!", resetToken });
+      }
+    );
+  } catch (error) {
+    console.log("verifyUrl: ", error);
+    return res
+      .status(500)
+      .json({ success: false, error: error, msg: "Internal Server Error!" });
+  }
+};
+const resetPassword = async (req, res) => {
+  const { newPassword, resetToken } = req.body;
+  try {
+    await dbConn();
+
+    await jwt.verify(
+      resetToken,
+      `${process.env.JWT_SECRET}`,
+      async (err, decode) => {
+        // redirection error
+        if (err) {
+          if (err?.message === "jwt expired")
+            return res.json({ success: false, msg: "Token has expired!" });
+          if (err?.message === "jwt malformed")
+            return res.json({ success: false, msg: "Invalid token!" });
+        }
+
+        const hashPassword = await bcrypt.hash(newPassword, 10);
+
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: decode.id },
+          { $set: { password: hashPassword } },
+          { new: true }
+        );
+
+        return res.json({ success: true, msg: "Password has been reset!" });
+      }
+    );
+  } catch (error) {
+    console.log("reset password: ", error);
+    return res
+      .status(500)
+      .json({ success: false, error: error, msg: "Internal Server Error!" });
+  }
+};
 
 module.exports = {
   report1,
@@ -548,4 +618,6 @@ module.exports = {
   resetpasswordtoken,
   genera2,
   blotter1,
+  resetPassword,
+  verifyUrlReset,
 };
