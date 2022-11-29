@@ -516,7 +516,8 @@ const resetpasswordtoken = async (req, res) => {
       await admin12({
         to: email,
         type: "Reset Password",
-        link: token,
+        link: "https://barangay-talonuno.vercel.app/reset=password",
+        token,
         midtext: "you have 1hr to change your password",
       });
 

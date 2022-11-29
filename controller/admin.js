@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const { User, Reports, Request, blotters } = require("../db/model");
 const bcrypt = require("bcrypt");
-
+const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
 const dbcon = require("../db/dbcon");
 const { admin12 } = require("../auth/emailsender");
+const { request } = require("express");
 const log = async (req, res) => {
   await dbcon();
   {
@@ -15,6 +16,7 @@ const log = async (req, res) => {
     const blotlog = await blotters.find();
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
     const sumrep = replog.map((i) => i.reports.length).reduce((a, b) => a + b);
+
     const sumblot = blotlog
       .map((i) => i.blotter.length)
       .reduce((a, b) => a + b);
@@ -31,10 +33,31 @@ const log = async (req, res) => {
       .reduce((a, b) => a + b);
 
     const total = penrep + penreq + penblot;
-
+    const rep = await Reports.find();
+    const sortreport = rep.map((i) =>
+      i.reports.sort(
+        (a, b) =>
+          new moment(b.ReportTime).format("YYYYMMDD") -
+          new moment(a.ReportTime).format("YYYYMMDD")
+      )
+    );
+    const req = await Request.find();
+    const sortRequest = req.map((i) =>
+      i.request.sort(
+        (a, b) =>
+          new moment(b.requestTime).format("YYYYMMDD") -
+          new moment(a.requestTime).format("YYYYMMDD")
+      )
+    );
+    const blots = await blotters.find();
+    const sortblot = blots.map((i) =>
+      i.blotter.sort(
+        (a, b) =>
+          new moment(b.RequestTime).format("YYYYMMDD") -
+          new moment(a.RequestTime).format("YYYYMMDD")
+      )
+    );
     return res.status(200).json({
-      reqlog,
-      replog,
       blotlog,
       sumreq,
       sumrep,
@@ -44,6 +67,11 @@ const log = async (req, res) => {
       penreq,
       penblot,
       user,
+      reqlog,
+      sortblot,
+      replog,
+      sortreport,
+      sortRequest,
     }); //password email match
   }
 };
