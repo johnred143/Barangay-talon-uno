@@ -63,7 +63,7 @@ const log = async (req, res) => {
     const blots = await blotters.find();
     const sortblot = blots.map((i) => ({
       ...i.toObject(),
-      blotte: i.blotte.sort(
+      blotter: i.blotter.sort(
         (a, b) =>
           new moment(b.RequestTime).format("YYYYMMDD") -
           new moment(a.RequestTime).format("YYYYMMDD")
