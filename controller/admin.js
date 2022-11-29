@@ -63,7 +63,7 @@ const log = async (req, res) => {
     const blots = await blotters.find();
     const sortblot = blots.map((i) => ({
       ...i.toObject(),
-      blotter: i.blotter.sort(
+      blotte: i.blotte.sort(
         (a, b) =>
           new moment(b.RequestTime).format("YYYYMMDD") -
           new moment(a.RequestTime).format("YYYYMMDD")
@@ -83,7 +83,7 @@ const log = async (req, res) => {
       sortblot,
       replog,
       sortreport,
-      sortRequest,
+       sortRequest,
     }); //password email match
   }
 };
