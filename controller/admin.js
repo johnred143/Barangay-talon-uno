@@ -42,14 +42,7 @@ const log = async (req, res) => {
           new moment(a.ReportTime).format("YYYYMMDD")
       ),
     }));
-    ({
-      ...i.toObject(),
-      request: i.request.sort(
-        (a, b) =>
-          new moment(b.requestTime).format("YYYYMMDD") -
-          new moment(a.requestTime).format("YYYYMMDD")
-      ),
-    });
+    
     const req = await Request.find();
     const sortRequest = req.map((i) => ({
       ...i.toObject(),
@@ -63,7 +56,7 @@ const log = async (req, res) => {
     const blots = await blotters.find();
     const sortblot = blots.map((i) => ({
       ...i.toObject(),
-      blotte: i.blotte.sort(
+      blotter: i.blotter.sort(
         (a, b) =>
           new moment(b.RequestTime).format("YYYYMMDD") -
           new moment(a.RequestTime).format("YYYYMMDD")
