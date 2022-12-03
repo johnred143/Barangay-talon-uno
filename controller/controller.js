@@ -505,11 +505,10 @@ const resetpasswordtoken = async (req, res) => {
     const user = await User.findOne({ email });
     console.log(user);
     // generate url for reset password
-    const token = await jwt.sign(
-      { id: user._id },
-      `${process.env.JWT_SECRET}`,
-      { expiresIn: "1h" }
-    );
+    const token = await generateAccessToken({
+      email: user.email,
+      
+    });
     const linksend =
       "https://barangay-talonuno.vercel.app/reset=password/" + token;
     if (email === user.email) {
@@ -533,75 +532,75 @@ const resetpasswordtoken = async (req, res) => {
       .json({ success: false, error: error, msg: "Internal Server Error!" });
   }
 };
-const verifyUrlReset = async (req, res) => {
-  const { token } = req.body;
+// const verifyUrlReset = async (req, res) => {
+//   const { token } = req.body;
 
-  try {
-    // verify token
-    await jwt.verify(
-      token,
-      `${process.env.JWT_SECRET}`,
-      async (err, decode) => {
-        // redirection error
-        if (err) {
-          if (err?.message === "jwt expired")
-            return res.json({ success: false, msg: "Token has expired!" });
-          if (err?.message === "jwt malformed")
-            return res.json({ success: false, msg: "Invalid token!" });
-        }
+//   try {
+//     // verify token
+//     await jwt.verify(
+//       token,
+//       `${process.env.TOKEN_SECRET}`,
+//       async (err, decode) => {
+//         // redirection error
+//         if (err) {
+//           if (err?.message === "jwt expired")
+//             return res.json({ success: false, msg: "Token has expired!" });
+//           if (err?.message === "jwt malformed")
+//             return res.json({ success: false, msg: "Invalid token!" });
+//         }
 
-        // token verified generate new token to reset expiry
-        const resetToken = await jwt.sign(
-          { id: decode.id },
-          `${process.env.JWT_SECRET}`,
-          { expiresIn: "1d" }
-        );
+//         // token verified generate new token to reset expiry
+//         const resetToken = await jwt.sign(
+//           { email: decode.email },
+//           `${process.env.TOKEN_SECRET}`,
+//           { expiresIn: "1d" }
+//         );
 
-        return res.json({ success: true, msg: "Token verified!", resetToken });
-      }
-    );
-  } catch (error) {
-    console.log("verifyUrl: ", error);
-    return res
-      .status(500)
-      .json({ success: false, error: error, msg: "Internal Server Error!" });
-  }
-};
-const resetPassword = async (req, res) => {
-  const { newPassword, resetToken } = req.body;
-  try {
-    await dbConn();
+//         return res.json({ success: true, msg: "Token verified!", resetToken });
+//       }
+//     );
+//   } catch (error) {
+//     console.log("verifyUrl: ", error);
+//     return res
+//       .status(500)
+//       .json({ success: false, error: error, msg: "Internal Server Error!" });
+//   }
+// };
+// const resetPassword = async (req, res) => {
+//   const { newPassword, resetToken } = req.body;
+//   try {
+//     await dbConn();
 
-    await jwt.verify(
-      resetToken,
-      `${process.env.JWT_SECRET}`,
-      async (err, decode) => {
-        // redirection error
-        if (err) {
-          if (err?.message === "jwt expired")
-            return res.json({ success: false, msg: "Token has expired!" });
-          if (err?.message === "jwt malformed")
-            return res.json({ success: false, msg: "Invalid token!" });
-        }
+//     await jwt.verify(
+//       resetToken,
+//       `${process.env.TOKEN_SECRET}`,
+//       async (err, decode) => {
+//         // redirection error
+//         if (err) {
+//           if (err?.message === "jwt expired")
+//             return res.json({ success: false, msg: "Token has expired!" });
+//           if (err?.message === "jwt malformed")
+//             return res.json({ success: false, msg: "Invalid token!" });
+//         }
 
-        const hashPassword = await bcrypt.hash(newPassword, 10);
+//         const hashPassword = await bcrypt.hash(newPassword, 10);
 
-        const updatedUser = await User.findOneAndUpdate(
-          { _id: decode.id },
-          { $set: { password: hashPassword } },
-          { new: true }
-        );
-
-        return res.json({ success: true, msg: "Password has been reset!" });
-      }
-    );
-  } catch (error) {
-    console.log("reset password: ", error);
-    return res
-      .status(500)
-      .json({ success: false, error: error, msg: "Internal Server Error!" });
-  }
-};
+//         const updatedUser = await User.findOneAndUpdate(
+//           { email: decode.email },
+//           { $set: { password: hashPassword } },
+//           { new: true }
+//         );
+//         console.log(decode.email);
+//         return res.json({ success: true, msg: "Password has been reset!" });
+//       }
+//     );
+//   } catch (error) {
+//     console.log("reset password: ", error);
+//     return res
+//       .status(500)
+//       .json({ success: false, error: error, msg: "Internal Server Error!" });
+//   }
+// };
 
 module.exports = {
   report1,
@@ -619,6 +618,6 @@ module.exports = {
   resetpasswordtoken,
   genera2,
   blotter1,
-  resetPassword,
-  verifyUrlReset,
+  // resetPassword,
+  // verifyUrlReset,
 };
