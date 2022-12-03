@@ -60,19 +60,37 @@ const request = async (req, res) => {
     res1,
   } = req.body;
   const uuid = require("uuid");
-  console.log(type, irbi, date);
+
   const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
+ 
+  const currentdate = new Date();
+  const datetime =
+    "0" +
+    currentdate.getFullYear() +
+    (currentdate.getMonth() + 1) +
+    currentdate.getDate() +
+    currentdate.getHours() +
+    currentdate.getMinutes() +
+    currentdate.getSeconds();
   await dbcon();
   console.log("request");
   await admin12({
     to: req.user.email,
-    type: "Request",
+    type: "You Requested For A   " + type,
     type1: "submitted",
     link: "https://barangay-talonuno.vercel.app/request",
     midtext: "Request has been send to your barangay",
     id: ref,
   });
+  await notif({
+    to: req.user.email,
+    type1: "submitted A " + type,
+    link: "https://barangay-talonuno.vercel.app/report",
+    midtext: "Someone Submitted a report please process immediately",
+    id: ref,
+  });
+
   try {
     const result = await Request.updateOne(
       { email: req.user.email },
@@ -83,7 +101,7 @@ const request = async (req, res) => {
               ref,
               requestTime: RequestTime,
               type,
-              irbi: Number(irbi),
+              irbi: Number(datetime),
               date,
               region,
               precint: Number(precint),
