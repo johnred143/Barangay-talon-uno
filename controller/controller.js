@@ -435,7 +435,7 @@ const verify = async (req, res) => {
 };
 
 const updatepage = async (req, res) => {
-  const { image, number } = req.body;
+  const { image } = req.body;
 
   await dbcon();
   console.log("attempting to update");
@@ -450,7 +450,6 @@ const updatepage = async (req, res) => {
       {
         $set: {
           image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
-          number,
         },
       },
       {
@@ -473,9 +472,6 @@ const updatepage = async (req, res) => {
   }
 };
 
-
-
-
 module.exports = {
   report1,
   login,
@@ -492,5 +488,4 @@ module.exports = {
 
   genera2,
   blotter1,
-  
 };
