@@ -63,7 +63,7 @@ const request = async (req, res) => {
 
   const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
- 
+
   const currentdate = new Date();
   const datetime =
     "0" +
@@ -80,7 +80,7 @@ const request = async (req, res) => {
     type: "You Requested For A   " + type,
     type1: "submitted",
     link: "https://barangay-talonuno.vercel.app/request",
-    midtext: "Request has been send to your barangay",
+    midtext: type + " Request has been send to your barangay",
     id: ref,
   });
   await notif({
