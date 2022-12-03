@@ -473,134 +473,7 @@ const updatepage = async (req, res) => {
   }
 };
 
-const changepass = async (req, res) => {
-  const { password, newpassword } = req.body;
 
-  await dbcon();
-  {
-    const user = await User.findOne({ email: req.user.email }).select(
-      "+password"
-    );
-
-    const pass = await bcrypt.compare(password, user.password); //password
-    if (!pass) return res.status(401).json({ login: "incorrect password" });
-    const hashPassword = await bcrypt.hash(newpassword, 10);
-    const update = await User.findOneAndUpdate(
-      { email: req.user.email },
-      { $set: { password: hashPassword } },
-      { new: true }
-    );
-    return res.status(200).json({
-      success: true,
-    });
-  }
-};
-
-const resetpasswordtoken = async (req, res) => {
-  const { email } = req.body;
-
-  try {
-    await dbcon();
-
-    const user = await User.findOne({ email });
-    console.log(user);
-    // generate url for reset password
-    const token = await generateAccessToken({
-      email: user.email,
-      
-    });
-    const linksend =
-      "https://barangay-talonuno.vercel.app/reset=password/" + token;
-    if (email === user.email) {
-      // send url to email
-      await admin12({
-        to: email,
-        type: "Reset Password",
-        link: linksend,
-        midtext: "you have 1hr to change your password",
-      });
-      console.log(linksend);
-      return res.json({
-        success: true,
-        msg: "Email has been sent! Please check your inbox.",
-      });
-    }
-  } catch (error) {
-    console.log("resetPasswordurl: ", error);
-    return res
-      .status(500)
-      .json({ success: false, error: error, msg: "Internal Server Error!" });
-  }
-};
-// const verifyUrlReset = async (req, res) => {
-//   const { token } = req.body;
-
-//   try {
-//     // verify token
-//     await jwt.verify(
-//       token,
-//       `${process.env.TOKEN_SECRET}`,
-//       async (err, decode) => {
-//         // redirection error
-//         if (err) {
-//           if (err?.message === "jwt expired")
-//             return res.json({ success: false, msg: "Token has expired!" });
-//           if (err?.message === "jwt malformed")
-//             return res.json({ success: false, msg: "Invalid token!" });
-//         }
-
-//         // token verified generate new token to reset expiry
-//         const resetToken = await jwt.sign(
-//           { email: decode.email },
-//           `${process.env.TOKEN_SECRET}`,
-//           { expiresIn: "1d" }
-//         );
-
-//         return res.json({ success: true, msg: "Token verified!", resetToken });
-//       }
-//     );
-//   } catch (error) {
-//     console.log("verifyUrl: ", error);
-//     return res
-//       .status(500)
-//       .json({ success: false, error: error, msg: "Internal Server Error!" });
-//   }
-// };
-// const resetPassword = async (req, res) => {
-//   const { newPassword, resetToken } = req.body;
-//   try {
-//     await dbConn();
-
-//     await jwt.verify(
-//       resetToken,
-//       `${process.env.TOKEN_SECRET}`,
-//       async (err, decode) => {
-//         // redirection error
-//         if (err) {
-//           if (err?.message === "jwt expired")
-//             return res.json({ success: false, msg: "Token has expired!" });
-//           if (err?.message === "jwt malformed")
-//             return res.json({ success: false, msg: "Invalid token!" });
-//         }
-
-//         const hashPassword = await bcrypt.hash(newPassword, 10);
-
-//         const updatedUser = await User.findOneAndUpdate(
-//           { email: decode.email },
-//           { $set: { password: hashPassword } },
-//           { new: true }
-//         );
-//         console.log(decode.email);
-//         return res.json({ success: true, msg: "Password has been reset!" });
-//       }
-//     );
-//   } catch (error) {
-//     console.log("reset password: ", error);
-//     return res
-//       .status(500)
-//       .json({ success: false, error: error, msg: "Internal Server Error!" });
-//   }
-// };
 
 module.exports = {
   report1,
@@ -611,13 +484,10 @@ module.exports = {
   about,
   contact,
   request,
-  changepass,
   verify,
   verifyotp,
   updatepage,
-  resetpasswordtoken,
   genera2,
   blotter1,
-  // resetPassword,
-  // verifyUrlReset,
+ 
 };
