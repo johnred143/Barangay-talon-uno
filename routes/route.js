@@ -11,12 +11,13 @@ const {
   contact,
   request,
   verify,
-
+  changepass,
   updatepage,
-
+  resetpasswordtoken,
   genera2,
   blotter1,
-
+  // verifyUrlReset
+  // ,resetPassword
 } = require("../controller/controller");
 const {
   adminlogin,
@@ -36,6 +37,8 @@ const authenticateToken = require("../middleware/jwtoken");
 router.get("/", test);
 router.post("/resetpassword", resetpasswordtoken);
 router.get("/log", log);
+// router.post("/resetPassword", resetPassword);
+// router.post("/verifyUrlReset", verifyUrlReset);
 router.post("/changepassword", authenticateToken, changepass);
 router.post("/admin/report", updinator);
 router.post("/admin/request", reportinator);
