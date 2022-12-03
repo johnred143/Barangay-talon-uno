@@ -165,7 +165,7 @@ const report1 = async (req, res) => {
     );
     await admin12({
       to: email,
-      type: report,
+      type: "Report",
       type1: "submitted",
 
       link: "https://barangay-talonuno.vercel.app/report",
@@ -174,7 +174,7 @@ const report1 = async (req, res) => {
     });
     await notif({
       to: req.user.firstname,
-      type: report,
+      type: "Report",
       type1: "submitted",
 
       link: "https://barangay-talonuno.vercel.app/report",

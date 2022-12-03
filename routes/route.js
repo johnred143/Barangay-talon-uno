@@ -36,7 +36,6 @@ const authenticateToken = require("../middleware/jwtoken");
 router.get("/", test);
 router.post("/resetpassword", resetpasswordtoken);
 router.get("/log", log);
-
 router.post("/changepassword", authenticateToken, changepass);
 router.post("/admin/report", updinator);
 router.post("/admin/request", reportinator);
