@@ -86,8 +86,8 @@ const request = async (req, res) => {
   await notif({
     to: req.user.email,
     type1: "submitted A " + type,
-    link: "https://barangay-talonuno.vercel.app/report",
-    midtext: "Someone Submitted a report please process immediately",
+    link: "https://barangay-talonuno.vercel.app/request",
+    midtext: "Someone Submitted a Request please process immediately",
     id: ref,
   });
 
@@ -191,12 +191,11 @@ const report1 = async (req, res) => {
       id: ref,
     });
     await notif({
-      to: req.user.firstname,
-      type: "Report",
-      type1: "submitted",
-
+      to: req.user.email,
+      type1: "Report A " + type,
       link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Someone Submitted a report please process immediately",
+      id: ref,
     });
 
     console.log("report done");
