@@ -163,7 +163,7 @@ const report1 = async (req, res) => {
       folder: `report/`,
     });
     const rep = await Reports.findOneAndUpdate(
-      { email: req.user.email },
+      { email: email },
       {
         $push: {
           reports: [
@@ -188,13 +188,6 @@ const report1 = async (req, res) => {
 
       link: "https://barangay-talonuno.vercel.app/report",
       midtext: "Report Submitted to local Authority",
-      id: ref,
-    });
-    await notif({
-      to: req.user.email,
-      type1: "Report A " + type,
-      link: "https://barangay-talonuno.vercel.app/report",
-      midtext: "Someone Submitted a report please process immediately",
       id: ref,
     });
 
