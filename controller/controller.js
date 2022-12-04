@@ -83,13 +83,6 @@ const request = async (req, res) => {
     midtext: type + " Request has been send to your barangay",
     id: ref,
   });
-  await notif({
-    to: req.user.email,
-    type1: "submitted A " + type,
-    link: "https://barangay-talonuno.vercel.app/request",
-    midtext: "Someone Submitted a Request please process immediately",
-    id: ref,
-  });
 
   try {
     const result = await Request.updateOne(
