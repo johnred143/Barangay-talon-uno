@@ -89,7 +89,10 @@ const request = async (req, res) => {
     midtext: "Someone Submitted a report please process immediately",
     id: ref,
   });
-
+//  try {
+//     const upload = await cloudinary.uploader.upload(Image, {
+//       folder: `report/`,
+//     });
   try {
     const result = await Request.updateOne(
       { email: req.user.email },
@@ -122,6 +125,7 @@ const request = async (req, res) => {
               address,
               number: Number(number),
               res1,
+              Image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
             },
           ],
           $inc: { irbi: 1 },

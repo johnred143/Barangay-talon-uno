@@ -30,7 +30,6 @@ const Admin = new Schema(
   {
     employeeId: { type: String, required: true },
     department: { type: String, required: true },
-    pos: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     password: { type: String, required: true, select: false },
@@ -104,6 +103,7 @@ const reqform = new Schema(
         number: { type: Number, required: true },
         res1: { type: String, required: true },
         process: { type: String, default: "Pending" },
+        Image: { type: String, required:true},
       },
     ],
   },

@@ -239,7 +239,7 @@ const blotinator = async (req, res) => {
 // };
 
 const adminreg = async (req, res) => {
-  const { employeeId, department, pos, firstname, lastname, password } =
+  const { employeeId, department, firstname, lastname, password } =
     req.body;
 
   await dbcon();
@@ -253,7 +253,6 @@ const adminreg = async (req, res) => {
   const user = await new admin({
     employeeId,
     department,
-    pos,
     firstname,
     lastname,
     password: hashPassword,
