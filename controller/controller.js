@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, auth, blotters,History } = require("../db/model");
+const {
+  User,
+  Reports,
+  Request,
+  auth,
+  blotters,
+  History,
+} = require("../db/model");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -89,28 +96,12 @@ const request = async (req, res) => {
     midtext: "Someone Submitted a report please process immediately",
     id: ref,
   });
- 
-  try { const upload = await cloudinary.uploader.upload(Image, {
-    folder: `report/`,
-  });
-  const history = await History.findOneAndUpdate(
-    { email: req.user.email },
-    {
-      $push: {
-        History: [
-          {
-            ReportTime,
-            ref,
-            name: req.user.firstname,
-            addressdetail,
-            History: type,
-            
-          },
-        ],
-      },
-    },
-    { new: true, upsert: true }
-  );
+
+  try {
+    const upload = await cloudinary.uploader.upload(Image, {
+      folder: `report/`,
+    });
+    
     const result = await Request.updateOne(
       { email: req.user.email },
       {
@@ -150,7 +141,7 @@ const request = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    
+
     console.log("request done");
 
     return res.status(200).json({
@@ -197,23 +188,7 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    const history = await History.findOneAndUpdate(
-      { email: req.user.email },
-      {
-        $push: {
-          History: [
-            {
-              ReportTime,
-              ref,
-              name: req.user.firstname,
-              History: report,
-              
-            },
-          ],
-        },
-      },
-      { new: true, upsert: true }
-    );
+   
     await admin12({
       to: email,
       type: "Report",
@@ -357,25 +332,9 @@ const login = async (req, res) => {
 
     console.log(user);
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type="login"
+    const type = "login";
     const ref = uuid.v4();
-    const history = await History.findOneAndUpdate(
-      { email: req.user.email },
-      {
-        $push: {
-          History: [
-            {
-              ReportTime,
-              ref,
-              name: req.user.firstname,
-              History: type,
-              
-            },
-          ],
-        },
-      },
-      { new: true, upsert: true }
-    );
+  
     const otpss = await auth.findOneAndUpdate(
       { email },
       {
