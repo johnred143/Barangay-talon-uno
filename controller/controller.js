@@ -35,7 +35,7 @@ const request = async (req, res) => {
     irbi,
     date,
     region,
-    precint,
+
     province,
     city,
     contact,
@@ -43,14 +43,13 @@ const request = async (req, res) => {
     lastname,
     firstname,
     middlename,
-    nickname,
+
     age,
     gender,
     birthday,
     status,
     birthplace,
-    height,
-    weight,
+
     presentadd,
     provinceadd,
     contactname,
@@ -104,7 +103,6 @@ const request = async (req, res) => {
               irbi: Number(datetime),
               date,
               region,
-              precint: Number(precint),
               province,
               city,
               contact: Number(contact),
@@ -112,14 +110,11 @@ const request = async (req, res) => {
               lastname,
               firstname,
               middlename,
-              nickname,
               age: Number(age),
               gender,
               birthday,
               status,
               birthplace,
-              height: Number(height),
-              weight: Number(weight),
               presentadd,
               provinceadd,
               contactname,
@@ -302,7 +297,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) return res.status(401).json({ login: "email not register" }); //email
-
+    if (user.disable) return res.status(401).json({ login: "User Disabale" }); //email
     const pass = await bcrypt.compare(password, user.password); //password
     if (!pass) return res.status(401).json({ login: "incorrect password" });
 

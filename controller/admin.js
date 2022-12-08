@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, blotters } = require("../db/model");
+const { User, Reports, Request, blotters, admin } = require("../db/model");
 const bcrypt = require("bcrypt");
 const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
@@ -42,7 +42,7 @@ const log = async (req, res) => {
           new moment(a.ReportTime).format("YYYYMMDD")
       ),
     }));
-    
+
     const req = await Request.find();
     const sortRequest = req.map((i) => ({
       ...i.toObject(),
@@ -76,39 +76,55 @@ const log = async (req, res) => {
       sortblot,
       replog,
       sortreport,
-       sortRequest,
+      sortRequest,
     }); //password email match
   }
 };
+
 const adminlogin = async (req, res) => {
-  const user = "admin";
-  const pass = "pass";
-  const firedept = "fire";
-  const firepass = "dept";
-  const popo = "police";
-  const popass = "dept";
-  const { username, password } = req.body;
+  const { employeeId, password } = req.body;
   await dbcon();
   {
-    switch (username) {
-      case "admin":
-        if (user === username && pass === password) {
-          return res.json({ login: true, usertype: "admin" });
-        } else return res.json({ login: false });
-        break;
-      case "fire":
-        if (firedept === username && firepass === password) {
-          return res.json({ login: true, usertype: "fire" });
-        } else return res.json({ login: false });
-        break;
-      case "police":
-        if (popo === username && popass === password) {
-          return res.json({ login: true, usertype: "police" });
-        } else return res.json({ login: false });
-      default:
-        return res.json({ login: false });
-    }
+    const user = await admin.findOne({ employeeId }).select("+password");
+
+    if (!user) return res.status(401).json({ login: "employee not register" }); //email
+    if (user.disable) return res.status(401).json({ login: "User Disabale" }); //email
+    const pass = await bcrypt.compare(password, user.password); //password
+    if (!pass) return res.status(401).json({ login: "incorrect password" });
+
+    return res.status(200).json({
+      login: "success",
+      usertype: user.department,
+      Fullname: user.firstname + " " + user.lastname,
+    }); //password email match
   }
+  // const user = "admin";
+  // const pass = "pass";
+  // const firedept = "fire";
+  // const firepass = "dept";
+  // const popo = "police";
+  // const popass = "dept";
+
+  // {
+  //   switch (username) {
+  //     case "admin":
+  //       if (pos === "admin") {
+  //         return res.json({ login: true, usertype: "admin" });
+  //       } else return res.json({ login: false });
+  //       break;
+  //     case "fire":
+  //       if (pos === "Fireman") {
+  //         return res.json({ login: true, usertype: "fire" });
+  //       } else return res.json({ login: false });
+  //       break;
+  //     case "police":
+  //       if (pos === "Police") {
+  //         return res.json({ login: true, usertype: "police" });
+  //       } else return res.json({ login: false });
+  //     default:
+  //       return res.json({ login: false });
+  //   }
+  // }
 };
 //this report
 const updinator = async (req, res) => {
@@ -194,4 +210,36 @@ const blotinator = async (req, res) => {
   return res.json({ update: false });
 };
 
-module.exports = { adminlogin, log, updinator, reportinator, blotinator };
+const adminreg = async (req, res) => {
+  const { employeeId, department, pos, firstname, lastname, password } =
+    req.body;
+
+  await dbcon();
+
+  const exist = await admin.findOne({ employeeId });
+  console.log(exist);
+
+  if (exist) return res.json({ error: "employeeId is already used!!!!" });
+  const hashPassword = await bcrypt.hash(password, 10);
+
+  const user = await new admin({
+    employeeId,
+    department,
+    pos,
+    firstname,
+    lastname,
+    password: hashPassword,
+  }).save();
+  return res.status(200).json({
+    success: true,
+    message: "registered",
+  });
+};
+module.exports = {
+  adminlogin,
+  log,
+  updinator,
+  reportinator,
+  blotinator,
+  adminreg,
+};

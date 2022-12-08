@@ -22,6 +22,7 @@ const {
   updinator,
   reportinator,
   blotinator,
+  adminreg
 } = require("../controller/admin");
 const {
   logsanitazer,
@@ -32,10 +33,11 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/log", log);
+router.get("/log", log);adminreg
 router.post("/admin/report", updinator);
 router.post("/admin/request", reportinator);
 router.post("/admin/blotter", blotinator);
+router.post("/admin/register", adminreg);
 router.post("/adminlogin", adminlogin);
 router.get("/main", authenticateToken, main);
 router.get("/main/aboutus", authenticateToken, about);
