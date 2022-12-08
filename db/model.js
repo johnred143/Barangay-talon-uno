@@ -30,6 +30,7 @@ const Admin = new Schema(
   {
     employeeId: { type: String, required: true },
     department: { type: String, required: true },
+
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     password: { type: String, required: true, select: false },
@@ -103,7 +104,7 @@ const reqform = new Schema(
         number: { type: Number, required: true },
         res1: { type: String, required: true },
         process: { type: String, default: "Pending" },
-        Image: { type: String, required:true},
+        Image: { type: String, required: true },
       },
     ],
   },
@@ -148,4 +149,13 @@ const Request = mongoose.model("request", reqform);
 const forget = mongoose.model("Reset", reset);
 const auth = mongoose.model("Otp", otps);
 const blotters = mongoose.model("Blotter", blotter);
-module.exports = { User, Reports, Request, forget, auth, blotters, admin ,History};
+module.exports = {
+  User,
+  Reports,
+  Request,
+  forget,
+  auth,
+  blotters,
+  admin,
+  History,
+};
