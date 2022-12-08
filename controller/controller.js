@@ -89,11 +89,28 @@ const request = async (req, res) => {
     midtext: "Someone Submitted a report please process immediately",
     id: ref,
   });
-//  try {
-//     const upload = await cloudinary.uploader.upload(Image, {
-//       folder: `report/`,
-//     });
-  try {
+ 
+  try { const upload = await cloudinary.uploader.upload(Image, {
+    folder: `report/`,
+  });
+  const history = await History.findOneAndUpdate(
+    { email: req.user.email },
+    {
+      $push: {
+        History: [
+          {
+            ReportTime,
+            ref,
+            name: req.user.firstname,
+            addressdetail,
+            History: type,
+            
+          },
+        ],
+      },
+    },
+    { new: true, upsert: true }
+  );
     const result = await Request.updateOne(
       { email: req.user.email },
       {
@@ -133,24 +150,7 @@ const request = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    const history = await History.findOneAndUpdate(
-      { email: req.user.email },
-      {
-        $push: {
-          History: [
-            {
-              ReportTime,
-              ref,
-              name: req.user.firstname,
-              addressdetail,
-              History: type,
-              
-            },
-          ],
-        },
-      },
-      { new: true, upsert: true }
-    );
+    
     console.log("request done");
 
     return res.status(200).json({

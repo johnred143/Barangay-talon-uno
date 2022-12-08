@@ -211,36 +211,35 @@ const blotinator = async (req, res) => {
 
   return res.json({ update: false });
 };
-// const usersetting = async (req, res) => {
-//   const { disable, email } = req.body;
-//   await dbcon();
-//   {
-//     const blotterlog = await User.findOneAndUpdate(
-//       { email },
-//       { $set: { disable: disable } },
-//       { new: true }
-//     );
-//     // await admin12({
-//     //   to: email,
-//     //   type: "Blotter",
-//     //   type1: "updated",
+const usersetting = async (req, res) => {
+  const { disable, email } = req.body;
+  await dbcon();
+  {
+    const blotterlog = await User.findOneAndUpdate(
+      { email },
+      { $set: { disable: disable } },
+      { new: true }
+    );
+    // await admin12({
+    //   to: email,
+    //   type: "Blotter",
+    //   type1: "updated",
 
-//     //   link: status,
-//     //   midtext:
-//     //     "Your Blotter Report Has been Updated please contact Barangay official for more info",
-//     //   id: ref,
-//     // });
-//     if (blotterlog) {
-//       return res.json({ update: true });
-//     }
-//   }
+    //   link: status,
+    //   midtext:
+    //     "Your Blotter Report Has been Updated please contact Barangay official for more info",
+    //   id: ref,
+    // });
+    if (blotterlog) {
+      return res.json({ update: true });
+    }
+  }
 
-//   return res.json({ update: false });
-// };
+  return res.json({ update: false });
+};
 
 const adminreg = async (req, res) => {
-  const { employeeId, department, firstname, lastname, password } =
-    req.body;
+  const { employeeId, department, firstname, lastname, password } = req.body;
 
   await dbcon();
 
