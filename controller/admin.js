@@ -11,6 +11,7 @@ const log = async (req, res) => {
   await dbcon();
   {
     const reqlog = await Request.find();
+
     const user1 = await User.find();
     const replog = await Reports.find();
     const blotlog = await blotters.find();
@@ -63,6 +64,7 @@ const log = async (req, res) => {
       ),
     }));
     return res.status(200).json({
+      user1,
       blotlog,
       sumreq,
       sumrep,
@@ -209,6 +211,32 @@ const blotinator = async (req, res) => {
 
   return res.json({ update: false });
 };
+// const usersetting = async (req, res) => {
+//   const { disable, email } = req.body;
+//   await dbcon();
+//   {
+//     const blotterlog = await User.findOneAndUpdate(
+//       { email },
+//       { $set: { disable: disable } },
+//       { new: true }
+//     );
+//     // await admin12({
+//     //   to: email,
+//     //   type: "Blotter",
+//     //   type1: "updated",
+
+//     //   link: status,
+//     //   midtext:
+//     //     "Your Blotter Report Has been Updated please contact Barangay official for more info",
+//     //   id: ref,
+//     // });
+//     if (blotterlog) {
+//       return res.json({ update: true });
+//     }
+//   }
+
+//   return res.json({ update: false });
+// };
 
 const adminreg = async (req, res) => {
   const { employeeId, department, pos, firstname, lastname, password } =

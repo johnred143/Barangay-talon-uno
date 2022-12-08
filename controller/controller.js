@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, auth, blotters } = require("../db/model");
+const { User, Reports, Request, auth, blotters,History } = require("../db/model");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -129,7 +129,24 @@ const request = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-
+    const history = await History.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          History: [
+            {
+              ReportTime,
+              ref,
+              name: req.user.firstname,
+              addressdetail,
+              History: type,
+              
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     console.log("request done");
 
     return res.status(200).json({
@@ -170,6 +187,23 @@ const report1 = async (req, res) => {
               addressdetail,
               report,
               Image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
+    const history = await History.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          History: [
+            {
+              ReportTime,
+              ref,
+              name: req.user.firstname,
+              History: report,
+              
             },
           ],
         },
@@ -318,7 +352,26 @@ const login = async (req, res) => {
     // console.log(user._id);
 
     console.log(user);
-
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type="login"
+    const ref = uuid.v4();
+    const history = await History.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          History: [
+            {
+              ReportTime,
+              ref,
+              name: req.user.firstname,
+              History: type,
+              
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     const otpss = await auth.findOneAndUpdate(
       { email },
       {

@@ -38,6 +38,20 @@ const Admin = new Schema(
   },
   { collection: "admin" }
 );
+const userhistory = new Schema(
+  {
+    email: { type: String },
+    history: [
+      {
+        ref: { type: String, required: true },
+        ReportTime: { type: String, required: true },
+        name: { type: String, required: true },
+        History: { type: String, required: true },
+      },
+    ],
+  },
+  { collection: "History" }
+);
 const Report = new Schema(
   {
     email: { type: String },
@@ -125,7 +139,8 @@ const blotter = new Schema(
   },
   { collection: "Blotter" }
 );
-Admin;
+userhistory;
+const History = mongoose.model("userhistory", userhistory);
 const admin = mongoose.model("Admin", Admin);
 const User = mongoose.model("user", user);
 const Reports = mongoose.model("reports", Report);
@@ -133,4 +148,4 @@ const Request = mongoose.model("request", reqform);
 const forget = mongoose.model("Reset", reset);
 const auth = mongoose.model("Otp", otps);
 const blotters = mongoose.model("Blotter", blotter);
-module.exports = { User, Reports, Request, forget, auth, blotters, admin };
+module.exports = { User, Reports, Request, forget, auth, blotters, admin ,History};
