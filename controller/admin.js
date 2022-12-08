@@ -93,7 +93,7 @@ const adminlogin = async (req, res) => {
     if (!pass) return res.status(401).json({ login: "incorrect password" });
 
     return res.status(200).json({
-      login: "success",
+      login: true,
       usertype: user.department,
       Fullname: user.firstname + " " + user.lastname,
     }); //password email match
