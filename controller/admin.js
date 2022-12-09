@@ -268,4 +268,5 @@ module.exports = {
   reportinator,
   blotinator,
   adminreg,
+  usersetting
 };

@@ -45,8 +45,7 @@ const userhistory = new Schema(
       {
         ref: { type: String, required: true },
         ReportTime: { type: String, required: true },
-        name: { type: String, required: true },
-        History: { type: String, required: true },
+        Activity: { type: String, required: true },
       },
     ],
   },

@@ -14,7 +14,6 @@ const {
   updatepage,
   genera2,
   blotter1,
-  
 } = require("../controller/controller");
 const {
   adminlogin,
@@ -22,7 +21,8 @@ const {
   updinator,
   reportinator,
   blotinator,
-  adminreg
+  adminreg,
+  usersetting,
 } = require("../controller/admin");
 const {
   logsanitazer,
@@ -33,7 +33,8 @@ const {
 const authenticateToken = require("../middleware/jwtoken");
 
 router.get("/", test);
-router.get("/log", log);adminreg
+router.get("/log", log);
+router.post("/admin/useredit", usersetting);
 router.post("/admin/report", updinator);
 router.post("/admin/request", reportinator);
 router.post("/admin/blotter", blotinator);

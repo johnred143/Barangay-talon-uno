@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, auth, blotters } = require("../db/model");
+const {
+  User,
+  Reports,
+  Request,
+  auth,
+  blotters,
+  History,
+} = require("../db/model");
 const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
@@ -62,7 +69,7 @@ const request = async (req, res) => {
 
   const RequestTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
-
+  const ReportTime = moment().tz("Asia/Manila").format();
   const currentdate = new Date();
   const datetime =
     "0" +
@@ -89,7 +96,22 @@ const request = async (req, res) => {
     midtext: "Someone Submitted a report please process immediately",
     id: ref,
   });
-
+  const type1 = "  has Requested ";
+  const history = await History.findOneAndUpdate(
+    { email: req.user.email },
+    {
+      $push: {
+        history: [
+          {
+            ReportTime,
+            ref,
+            Activity: req.user.email + type1 + type,
+          },
+        ],
+      },
+    },
+    { new: true, upsert: true }
+  );
   try {
     const result = await Request.updateOne(
       { email: req.user.email },
@@ -176,6 +198,22 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+    const type = "User has Reported";
+    const history = await History.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: type + req.user.email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     await admin12({
       to: email,
       type: "Report",
@@ -251,6 +289,7 @@ const blotter1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+
     await admin12({
       to: req.user.email,
       type: "Blotter",
@@ -318,7 +357,25 @@ const login = async (req, res) => {
     // console.log(user._id);
 
     console.log(user);
-
+    const uuid = require("uuid");
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type = "User has Login ";
+    const ref = uuid.v4();
+    const history = await History.findOneAndUpdate(
+      { email: email },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: type + email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     const otpss = await auth.findOneAndUpdate(
       { email },
       {
