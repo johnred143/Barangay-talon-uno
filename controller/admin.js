@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, blotters, admin } = require("../db/model");
+const { User, Reports, Request, blotters, admin ,History} = require("../db/model");
 const bcrypt = require("bcrypt");
 const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
@@ -13,6 +13,7 @@ const log = async (req, res) => {
     const reqlog = await Request.find();
 
     const user1 = await User.find();
+    const history = await History.find();
     const replog = await Reports.find();
     const blotlog = await blotters.find();
     const sumreq = reqlog.map((i) => i.request.length).reduce((a, b) => a + b);
@@ -238,6 +239,55 @@ const usersetting = async (req, res) => {
   return res.json({ update: false });
 };
 
+const adminsetting = async (req, res) => {
+  const { disable, employeeId } = req.body;
+  await dbcon();
+  {
+    const blotterlog = await User.findOneAndUpdate(
+      { employeeId },
+      { $set: { disable: disable } },
+      { new: true }
+    );
+    // await admin12({
+    //   to: email,
+    //   type: "Blotter",
+    //   type1: "updated",
+
+    //   link: status,
+    //   midtext:
+    //     "Your Blotter Report Has been Updated please contact Barangay official for more info",
+    //   id: ref,
+    // });
+    if (blotterlog) {
+      return res.json({ update: true });
+    }
+  }
+
+  return res.json({ update: false });
+};
+const adminchangepass = async (req, res) => {
+  const { password, newpassword } = req.body;
+
+  await dbcon();
+  {
+    const user = await User.findOne({ email: req.user.email }).select(
+      "+password"
+    );
+
+    const pass = await bcrypt.compare(password, user.password); //password
+    if (!pass) return res.status(401).json({ login: "incorrect password" });
+    const hashPassword = await bcrypt.hash(newpassword, 10);
+    const update = await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $set: { password: hashPassword } },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: true,
+    });
+  }
+};
+
 const adminreg = async (req, res) => {
   const { employeeId, department, firstname, lastname, password } = req.body;
 
@@ -269,4 +319,6 @@ module.exports = {
   blotinator,
   adminreg,
   usersetting
+  ,adminsetting,
+  adminchangepass
 };
