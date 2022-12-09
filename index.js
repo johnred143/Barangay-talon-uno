@@ -16,6 +16,7 @@ app.use(
       "https://barangay-talon-uno.vercel.app",
       "https://barangay-talonuno.vercel.app",
       "https://tatatalon-admin.vercel.app",
+      "https://talonuno.com",
     ],
     methods: ["GET", "POST"],
   })
