@@ -65,7 +65,7 @@ const log = async (req, res) => {
       ),
     }));
     return res.status(200).json({
-      user1,
+     history, user1,
       blotlog,
       sumreq,
       sumrep,
@@ -243,7 +243,7 @@ const adminsetting = async (req, res) => {
   const { disable, employeeId } = req.body;
   await dbcon();
   {
-    const blotterlog = await User.findOneAndUpdate(
+    const blotterlog = await admin.findOneAndUpdate(
       { employeeId },
       { $set: { disable: disable } },
       { new: true }
@@ -270,15 +270,15 @@ const adminchangepass = async (req, res) => {
 
   await dbcon();
   {
-    const user = await User.findOne({ email: req.user.email }).select(
+    const user = await admin.findOne({ employeeId: req.admin.employeeId }).select(
       "+password"
     );
 
     const pass = await bcrypt.compare(password, user.password); //password
     if (!pass) return res.status(401).json({ login: "incorrect password" });
     const hashPassword = await bcrypt.hash(newpassword, 10);
-    const update = await User.findOneAndUpdate(
-      { email: req.user.email },
+    const update = await admin.findOneAndUpdate(
+      { employeeId: req.admin.employeeId },
       { $set: { password: hashPassword } },
       { new: true }
     );
