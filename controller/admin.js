@@ -294,14 +294,13 @@ const adminchangepass = async (req, res) => {
   }
 };
 const userchangepass = async (req, res) => {
-  const {  email,newpassword } = req.body;
+  const { _id, newpassword } = req.body;
 
   await dbcon();
   {
-
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await User.findOneAndUpdate(
-      { email },
+      { _id },
       { $set: { password: hashPassword } },
       { new: true }
     );
