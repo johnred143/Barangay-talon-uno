@@ -304,7 +304,7 @@ const userchangepass = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await User.findOneAndUpdate(
-      { email },
+      { email, "blotter._id": ref },
       { $set: { password: hashPassword } },
       { new: true }
     );
