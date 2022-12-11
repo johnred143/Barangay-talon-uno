@@ -24,7 +24,8 @@ const {
   adminreg,
   usersetting,
   adminsetting,
-  adminchangepass
+  adminchangepass,
+  userchangepass,
 } = require("../controller/admin");
 const {
   logsanitazer,
@@ -33,12 +34,13 @@ const {
   emailnizer,
 } = require("../middleware/sanitazer");
 const authenticateToken = require("../middleware/jwtoken");
-adminchangepass
+
 router.get("/", test);
 router.get("/log", log);
 router.post("/admin/useredit", usersetting);
 router.post("/admin/adminedit", adminsetting);
-router.post("/admin/userchangepassword", adminchangepass);
+router.post("/admin/changepassword_user", userchangepass);
+router.post("/admin/changepassword_admin", adminchangepass);
 router.post("/admin/report", updinator);
 router.post("/admin/request", reportinator);
 router.post("/admin/blotter", blotinator);

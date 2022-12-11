@@ -113,6 +113,9 @@ const request = async (req, res) => {
     { new: true, upsert: true }
   );
   try {
+    const upload = await cloudinary.uploader.upload(Image, {
+      folder: `request/`,
+    });
     const result = await Request.updateOne(
       { email: req.user.email },
       {
@@ -144,6 +147,7 @@ const request = async (req, res) => {
               address,
               number: Number(number),
               res1,
+              image: `https://res.cloudinary.com/doqwvrp29/v1/${upload.public_id}`,
             },
           ],
           $inc: { irbi: 1 },
