@@ -103,7 +103,7 @@ const reqform = new Schema(
         number: { type: Number, required: true },
         res1: { type: String, required: true },
         process: { type: String, default: "Pending" },
-        image: { type: String, required: true },
+        Image: { type: String, default: "picture" },
       },
     ],
   },
