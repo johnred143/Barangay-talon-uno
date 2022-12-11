@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { User, Reports, Request, blotters, admin ,History} = require("../db/model");
+const {
+  User,
+  Reports,
+  Request,
+  blotters,
+  admin,
+  History,
+} = require("../db/model");
 const bcrypt = require("bcrypt");
 const moment = require("moment-timezone");
 const jwt = require("jsonwebtoken");
@@ -65,7 +72,8 @@ const log = async (req, res) => {
       ),
     }));
     return res.status(200).json({
-     history, user1,
+      history,
+      user1,
       blotlog,
       sumreq,
       sumrep,
@@ -270,10 +278,9 @@ const adminchangepass = async (req, res) => {
 
   await dbcon();
   {
-    const user = await admin.findOne({ employeeId: req.admin.employeeId }).select(
-      "+password"
-    );
-
+    const user = await admin
+      .findOne({ employeeId: req.admin.employeeId })
+      .select("+password");
 
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await admin.findOneAndUpdate(
@@ -287,7 +294,7 @@ const adminchangepass = async (req, res) => {
   }
 };
 const userchangepass = async (req, res) => {
-  const { newpassword } = req.body;
+  const { email, newpassword } = req.body;
 
   await dbcon();
   {
@@ -295,10 +302,9 @@ const userchangepass = async (req, res) => {
       "+password"
     );
 
-
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await User.findOneAndUpdate(
-      { email: req.user.email},
+      { email },
       { $set: { password: hashPassword } },
       { new: true }
     );
@@ -338,8 +344,8 @@ module.exports = {
   reportinator,
   blotinator,
   adminreg,
-  usersetting
-  ,adminsetting,
-  adminchangepass
-  ,userchangepass
+  usersetting,
+  adminsetting,
+  adminchangepass,
+  userchangepass,
 };
