@@ -64,6 +64,7 @@ const request = async (req, res) => {
     address,
     number,
     res1,
+    Image,
   } = req.body;
   const uuid = require("uuid");
 
