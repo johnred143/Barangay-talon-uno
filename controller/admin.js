@@ -298,13 +298,11 @@ const userchangepass = async (req, res) => {
 
   await dbcon();
   {
-    const user = await User.findOne({ email: req.user.email }).select(
-      "+password"
-    );
+    const user = await User.findOne({ email }).select("+password");
 
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await User.findOneAndUpdate(
-      { email},
+      { email: req.user.email },
       { $set: { password: hashPassword } },
       { new: true }
     );
