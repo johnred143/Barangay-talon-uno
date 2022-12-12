@@ -284,7 +284,7 @@ const adminchangepass = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(newpassword, 10);
     const update = await admin.findOneAndUpdate(
-      { employeeId: req.admin.employeeId },
+      { employeeId: req.user.employeeId },
       { $set: { password: hashPassword } },
       { new: true }
     );
