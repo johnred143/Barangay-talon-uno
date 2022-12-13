@@ -160,7 +160,7 @@ const adminlogin = async (req, res) => {
 };
 //this report
 const updinator = async (req, res) => {
-  const { ref, status, email } = req.body;
+  const { ref, status, email,employeeId } = req.body;
   await dbcon();
   try {
     const reqlog = await Reports.findOneAndUpdate(
@@ -180,7 +180,7 @@ const updinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has updated report Account: ";
+    const type1 = "  has updated report Account of: ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -229,7 +229,7 @@ const reportinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has updated  Request: ";
+    const type1 = "  has updated  Request of: ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -275,7 +275,7 @@ const blotinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has Updated Blotter: ";
+    const type1 = "  has Updated Blotter of : ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -427,7 +427,26 @@ const adminreg = async (req, res) => {
     lastname,
     password: hashPassword,
   }).save();
+  const uuid = require("uuid");
 
+  const ReportTime = moment().tz("Asia/Manila").format();
+  const ref = uuid.v4();
+  const type1 = "  Welcome ";
+  const history = await History.findOneAndUpdate(
+    { email:employeeId },
+    {
+      $push: {
+        history: [
+          {
+            ReportTime,
+            ref,
+            Activity: type1,firstname
+          },
+        ],
+      },
+    },
+    { new: true, upsert: true }
+  );
   return res.status(200).json({
     success: true,
     message: "registered",

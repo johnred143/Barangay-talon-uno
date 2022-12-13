@@ -203,7 +203,7 @@ const report1 = async (req, res) => {
       },
       { new: true, upsert: true }
     );
-    const type = "User has Reported";
+    const type = "User has Reported ";
     const history = await History.findOneAndUpdate(
       { email: req.user.email },
       {
@@ -452,7 +452,7 @@ const regs = async (req, res) => {
 
   const ReportTime = moment().tz("Asia/Manila").format();
   const ref = uuid.v4();
-  const type1 = "  has Register ";
+  const type1 = "  Welcome ";
   const history = await History.findOneAndUpdate(
     { email: req.user.email },
     {
@@ -461,7 +461,8 @@ const regs = async (req, res) => {
           {
             ReportTime,
             ref,
-            Activity: email + type1 ,
+            Activity: type1,
+            firstname,
           },
         ],
       },
