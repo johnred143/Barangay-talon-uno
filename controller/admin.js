@@ -389,7 +389,7 @@ const userchangepass = async (req, res) => {
     const ref = uuid.v4();
     const type1 = "  Has Changed Passwrd ";
     const history = await History.findOneAndUpdate(
-      { email: employeeId },
+      { email },
       {
         $push: {
           history: [
