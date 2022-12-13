@@ -160,7 +160,7 @@ const adminlogin = async (req, res) => {
 };
 //this report
 const updinator = async (req, res) => {
-  const { ref, status, email,employeeId } = req.body;
+  const { ref, status, email } = req.body;
   await dbcon();
   try {
     const reqlog = await Reports.findOneAndUpdate(
@@ -180,7 +180,7 @@ const updinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has updated report Account of: ";
+    const type1 = "  has updated report Account: ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -229,7 +229,7 @@ const reportinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has updated  Request of: ";
+    const type1 = "  has updated  Request: ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -275,7 +275,7 @@ const blotinator = async (req, res) => {
     const uuid = require("uuid");
 
     const ReportTime = moment().tz("Asia/Manila").format();
-    const type1 = "  has Updated Blotter of : ";
+    const type1 = "  has Updated Blotter: ";
     const history = await History.findOneAndUpdate(
       { email: employeeId },
       {
@@ -354,7 +354,6 @@ const adminsetting = async (req, res) => {
       { $set: { disable: disable } },
       { new: true }
     );
-    
     // await admin12({
     //   to: email,
     //   type: "Blotter",
