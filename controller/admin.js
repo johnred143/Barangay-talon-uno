@@ -354,6 +354,7 @@ const adminsetting = async (req, res) => {
       { $set: { disable: disable } },
       { new: true }
     );
+    
     // await admin12({
     //   to: email,
     //   type: "Blotter",
@@ -416,28 +417,22 @@ const adminreg = async (req, res) => {
 
   const exist = await admin.findOne({ employeeId });
   console.log(exist);
-  const uuid = require("uuid");
 
-  const ReportTime = moment().tz("Asia/Manila").format();
-  const ref = uuid.v4();
-  const type1 = "  Welcome ";
-  const history = await History.findOneAndUpdate(
-    { email:employeeId },
-    {
-      $push: {
-        history: [
-          {
-            ReportTime,
-            ref,
-            Activity: type1,firstname
-          },
-        ],
-      },
-    },
-    { new: true, upsert: true }
-  );
   if (exist) return res.json({ error: "employeeId is already used!!!!" });
+  const hashPassword = await bcrypt.hash(password, 10);
 
+  const user = await new admin({
+    employeeId,
+    department,
+    firstname,
+    lastname,
+    password: hashPassword,
+  }).save();
+
+  return res.status(200).json({
+    success: true,
+    message: "registered",
+  });
 };
 module.exports = {
   adminlogin,
