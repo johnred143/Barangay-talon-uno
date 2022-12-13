@@ -373,7 +373,7 @@ const adminsetting = async (req, res) => {
 };
 
 const userchangepass = async (req, res) => {
-  const {email, newpassword } = req.body;
+  const { email, newpassword } = req.body;
 
   await dbcon();
   {
@@ -382,6 +382,26 @@ const userchangepass = async (req, res) => {
       { email },
       { $set: { password: hashPassword } },
       { new: true }
+    );
+    const uuid = require("uuid");
+
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const ref = uuid.v4();
+    const type1 = "  Has Changed Passwrd ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: email + type1,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
     );
     return res.status(200).json({
       success: true,
