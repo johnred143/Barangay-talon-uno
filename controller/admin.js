@@ -103,12 +103,33 @@ const adminlogin = async (req, res) => {
     const pass = await bcrypt.compare(password, user.password); //password
     if (!pass) return res.status(401).json({ login: "incorrect password" });
 
+    const uuid = require("uuid");
+    const ref = uuid.v4();
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type1 = "  has Login Account: ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: type1 + employeeId,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
+
     return res.status(200).json({
       login: true,
       usertype: user.department,
       Fullname: user.firstname + " " + user.lastname,
     }); //password email match
   }
+
   // const user = "admin";
   // const pass = "pass";
   // const firedept = "fire";
@@ -156,6 +177,25 @@ const updinator = async (req, res) => {
         "Your Report Has been Updated please contact Barangay official for more info",
       id: ref,
     });
+    const uuid = require("uuid");
+
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type1 = "  has updated report Account: ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: employeeId + type1 + email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
 
     if (reqlog) {
       return res.json({ update: true, reqlog });
@@ -167,7 +207,7 @@ const updinator = async (req, res) => {
 };
 //this is update
 const reportinator = async (req, res) => {
-  const { ref, status, email } = req.body;
+  const { ref, status, email, employeeId } = req.body;
   await dbcon();
   {
     const replog = await Request.findOneAndUpdate(
@@ -186,7 +226,25 @@ const reportinator = async (req, res) => {
         id: ref,
       });
     }
+    const uuid = require("uuid");
 
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type1 = "  has updated  Request: ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: employeeId + type1 + email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     if (replog) {
       return res.json({ update: true });
     }
@@ -195,7 +253,7 @@ const reportinator = async (req, res) => {
   return res.json({ update: false });
 };
 const blotinator = async (req, res) => {
-  const { ref, status, email } = req.body;
+  const { ref, status, email, employeeId } = req.body;
   await dbcon();
   {
     const blotterlog = await blotters.findOneAndUpdate(
@@ -203,6 +261,7 @@ const blotinator = async (req, res) => {
       { $set: { "blotter.$.process": status } },
       { new: true }
     );
+
     await admin12({
       to: email,
       type: "Blotter",
@@ -213,6 +272,25 @@ const blotinator = async (req, res) => {
         "Your Blotter Report Has been Updated please contact Barangay official for more info",
       id: ref,
     });
+    const uuid = require("uuid");
+
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const type1 = "  has Updated Blotter: ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: employeeId + type1 + email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     if (blotterlog) {
       return res.json({ update: true });
     }
@@ -221,7 +299,7 @@ const blotinator = async (req, res) => {
   return res.json({ update: false });
 };
 const usersetting = async (req, res) => {
-  const { disable, email } = req.body;
+  const { disable, email, employeeId } = req.body;
   await dbcon();
   {
     const blotterlog = await User.findOneAndUpdate(
@@ -239,6 +317,26 @@ const usersetting = async (req, res) => {
     //     "Your Blotter Report Has been Updated please contact Barangay official for more info",
     //   id: ref,
     // });
+    const uuid = require("uuid");
+
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const ref = uuid.v4();
+    const type1 = "  has Disable Account: ";
+    const history = await History.findOneAndUpdate(
+      { email: employeeId },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: employeeId + type1 + email,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
+    );
     if (blotterlog) {
       return res.json({ update: true });
     }
@@ -273,28 +371,9 @@ const adminsetting = async (req, res) => {
 
   return res.json({ update: false });
 };
-const adminchangepass = async (req, res) => {
-  const { newpassword } = req.body;
 
-  await dbcon();
-  {
-    const user = await admin
-      .findOne({ employeeId: req.admin.employeeId })
-      .select("+password");
-
-    const hashPassword = await bcrypt.hash(newpassword, 10);
-    const update = await admin.findOneAndUpdate(
-      { employeeId: req.user.employeeId },
-      { $set: { password: hashPassword } },
-      { new: true }
-    );
-    return res.status(200).json({
-      success: true,
-    });
-  }
-};
 const userchangepass = async (req, res) => {
-  const {email, newpassword } = req.body;
+  const { email, newpassword } = req.body;
 
   await dbcon();
   {
@@ -303,6 +382,26 @@ const userchangepass = async (req, res) => {
       { email },
       { $set: { password: hashPassword } },
       { new: true }
+    );
+    const uuid = require("uuid");
+
+    const ReportTime = moment().tz("Asia/Manila").format();
+    const ref = uuid.v4();
+    const type1 = "  has ChangePassword ";
+    const history = await History.findOneAndUpdate(
+      { email: req.user.email },
+      {
+        $push: {
+          history: [
+            {
+              ReportTime,
+              ref,
+              Activity: email + type1,
+            },
+          ],
+        },
+      },
+      { new: true, upsert: true }
     );
     return res.status(200).json({
       success: true,
@@ -328,6 +427,7 @@ const adminreg = async (req, res) => {
     lastname,
     password: hashPassword,
   }).save();
+
   return res.status(200).json({
     success: true,
     message: "registered",
@@ -342,6 +442,6 @@ module.exports = {
   adminreg,
   usersetting,
   adminsetting,
-  adminchangepass,
+
   userchangepass,
 };

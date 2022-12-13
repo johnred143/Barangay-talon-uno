@@ -448,7 +448,26 @@ const regs = async (req, res) => {
     birthday,
     token: gen,
   }).save();
+  const uuid = require("uuid");
 
+  const ReportTime = moment().tz("Asia/Manila").format();
+  const ref = uuid.v4();
+  const type1 = "  has Register ";
+  const history = await History.findOneAndUpdate(
+    { email: req.user.email },
+    {
+      $push: {
+        history: [
+          {
+            ReportTime,
+            ref,
+            Activity: email + type1 ,
+          },
+        ],
+      },
+    },
+    { new: true, upsert: true }
+  );
   // const regToken = await generateAccessToken(user.email);
   // console.log("register: ", user.email);
 
