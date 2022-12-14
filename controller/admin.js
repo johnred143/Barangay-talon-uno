@@ -126,7 +126,7 @@ const adminlogin = async (req, res) => {
     return res.status(200).json({
       login: true,
       usertype: user.department,
-      Fullname: user.firstname + " " + user.lastname,
+      employeeId: user.firstname + " " + user.lastname,
     }); //password email match
   }
 
