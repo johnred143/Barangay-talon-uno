@@ -160,7 +160,7 @@ const adminlogin = async (req, res) => {
 };
 //this report
 const updinator = async (req, res) => {
-  const { ref, status, email } = req.body;
+  const { ref, status, email,employeeId } = req.body;
   await dbcon();
   try {
     const reqlog = await Reports.findOneAndUpdate(
